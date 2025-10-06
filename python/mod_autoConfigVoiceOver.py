@@ -36,9 +36,7 @@ def _api_support():
         return
     try:
         import openwg_gameface
-        _isApiPresent = g_modsSettingsApi is not None
-        if not _isApiPresent:
-            mylogger.error('autoConfigVoiceOver', 'openwg.gameface似乎出了问题，请检查依赖文件是否缺失。')
+        _isApiPresent = True
     except ImportError:
         stack_trace = traceback.format_exc()
         mylogger.error('autoConfigVoiceOver', '缺少依赖mod：net.openwg.gameface！模组无法工作！')
