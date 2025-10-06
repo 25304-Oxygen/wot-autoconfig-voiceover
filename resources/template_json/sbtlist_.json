@@ -1,0 +1,52 @@
+[
+    // 这里是一次保存多个可显示字幕的语音包信息的json模板文件
+    // 可以批量添加字幕语音包信息的json文件，注释部分参考sbt.json
+    // 一定要重命名模板，并添加对应前缀至模板名！！例如sbtlist_test.json，但不能是sbtlist_.json或者sbtlist.json！
+    // 文件夹请取英文名
+    // nickName代表要展示的中文名
+    // 如果只有一个字幕语音需要打包（voiceover只有一个），请用sbt.json
+    //
+    {
+        "nickName": "示例1", 
+        "voiceover_Path": "audioww/文件夹1/voiceover.bnk", 
+        "characters": "mods/gup.subtitles/文件夹1/characters.json", 
+        "sentences": "mods/gup.subtitles/文件夹1/sentences", 
+        "visuals": "mods/gup.subtitles/文件夹1/visuals.json"
+        "otherBanks": [
+            {
+                "bankLocation": "audioww/文件夹1/inbattle_communication_npc.bnk", 
+                "characters": "mods/gup.subtitles/文件夹1/characters.json", 
+                "sentences": "mods/gup.subtitles/文件夹1/sentences", 
+                "visuals": "mods/gup.subtitles/文件夹1/visuals.json"
+            }, 
+            {
+                "bankLocation": "audioww/文件夹1/inbattle_communication_pc.bnk", 
+                "characters": "mods/gup.subtitles/文件夹1/characters.json", 
+                "sentences": "mods/gup.subtitles/文件夹1/sentences", 
+                "visuals": "mods/gup.subtitles/文件夹1/visuals.json"
+            }
+        ]
+    }, 
+    {
+        "nickName": "示例2", 
+        "voiceover_Path": "audioww/文件夹2/voiceover.bnk", 
+        "characters": "mods/gup.subtitles/文件夹2/characters.json", 
+        "sentences": "mods/gup.subtitles/文件夹2/sentences", 
+        "visuals": "mods/gup.subtitles/文件夹2/visuals.json"
+        "otherBanks": [
+            {
+                "bankLocation": "audioww/文件夹2/inbattle_communication_npc.bnk", 
+                "characters": "mods/gup.subtitles/文件夹2/characters.json", 
+                "sentences": "mods/gup.subtitles/文件夹2/sentences", 
+                "visuals": "mods/gup.subtitles/文件夹2/visuals.json"
+            }, 
+            {
+                "bankLocation": "audioww/文件夹1/inbattle_communication_pc.bnk", 
+                "characters": "mods/gup.subtitles/文件夹1/characters.json", 
+                "sentences": "mods/gup.subtitles/文件夹1/sentences", 
+                "visuals": "mods/gup.subtitles/文件夹1/visuals.json"
+            }
+        ]
+    }
+    // 这里我们添加了两个，最后一个结尾这里不要带逗号（所有符号都是半角符号！）
+]

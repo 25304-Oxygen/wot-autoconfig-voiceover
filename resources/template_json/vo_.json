@@ -1,0 +1,28 @@
+{
+    // 将模板和res文件夹放一起打包，不要出现其他文件夹，即压缩文件第一级目录应为“res/”和“模板_名字.json”
+    // 一定要重命名模板，并添加对应前缀至模板名！！例如vo_test.json，但不能是vo_.json或者vo.json！
+    // 这里是保存单个语音包信息的json模板文件
+    // 最大限度减少了无用信息的填写 ^^
+    //
+    // 取个名称用于显示吧
+    //
+    "nickName": "测试语音包", 
+    "bankPath": "test/voiceover.bnk"
+    //
+    // 与字幕语音包需求的路径不同，这里的路径是直接从audioww出发的，语音包同样应当位于其中独立的文件夹中
+    //
+    // 为语音包创建声音模式时，voiceID和wwiseID会根据voiceover.bnk前的路径取名，这里是“test”
+    // 如果你的语音包路径：gup_jp/gup_jp_crew/voiceover.bnk，那么voiceID将会是“gup_jp/gup_jp_crew”
+    //
+    // 不过，为了区分外部语音包和内部语音包，从这里导入的语音会在voiceID加上前缀“ORV_”
+    //
+    // 那么创建的声音模式就变成了ORV_test，它的wwiseID将是test，切换至“ORV_test”时会读取nickName用来显示名字
+    // 刚才的例子中，创建的声音模式将是“ORV_gup_jp/gup_jp_crew”
+    //
+    // 如果不位于独立文件夹，例如path填：voiceover.bnk
+    // 那这个语音就会覆盖标准战斗语音（这个语音实际就位于audioww/voiceover.bnk）
+    // 为了语音不会互相覆盖导致冲突，从而被客户端卸载，请将语音包放入独立文件夹中。否则本插件不予理会。
+    //
+    // 注释段删不删都可以，读取的时候会进行删除
+    //
+}

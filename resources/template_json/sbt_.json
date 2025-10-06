@@ -1,0 +1,56 @@
+{
+    // 将模板和res文件夹放一起打包，不要出现其他文件夹，即压缩文件第一级目录应为“res/”和“模板.json”
+    // 一定要重命名模板，并添加对应前缀至模板名！！例如sbt_test.json，但不能是sbt_.json或者sbt.json！
+    // 这里是保存单个能够显示字幕的语音包所用信息的json模板文件
+    // nickName是要展示的中文名
+    //
+    "nickName": "示例语音", 
+    //
+    // 这个路径是从res文件夹出发的路径，语音包应当位于audioww内部一个独立的文件夹中
+    // 只要跟别的语音包文件夹名字不一样，语音就不会被覆盖了
+    // 为这个语音创建声音模式时，会将voiceID和wwiseID取名为audioww/之后、/voiceover.bnk之前的路径名，这里请用英文
+    // 如果你的路径是audioww/abc/ABCD/voiceover.bnk，那么ID会取值为“abc/ABCD”而非或其他
+    // 读取default.png或者msg.txt的路径将会是“audioww/abc/ABCD/[.png&.txt文件]”
+    //
+    // 如果不位于独立文件夹，例如path填：audioww/voiceover.bnk
+    // 那这个语音就会覆盖标准战斗语音（这个语音实际就位于audioww/voiceover.bnk）
+    // 为了语音不会互相覆盖，请将语音包放入独立文件夹中。否则本插件不予理会。
+    "voiceover_Path": "audioww/“目标文件名”/voiceover.bnk", 
+    //
+    // 这里前后两个“characters”属性我用的是相同的json
+    // 后面同理，所以属性值没有变化
+    // 这里的路径也是从res文件夹出发的
+    // 注意文件夹名字要是英文，中文可能因为字节转码而变成乱码
+    "characters": "mods/gup.subtitles/“另一个目标文件名”/characters.json", 
+    "sentences": "mods/gup.subtitles/“两个目标文件名”/sentences", 
+    "visuals": "mods/gup.subtitles/“可以取一样的名字”/visuals.json", 
+    "otherBanks": [
+        {
+            // 如果你有其他的bnk需要加载语音，请放到这里
+            // 比如你为轮盘语音做了字幕，那么这里填入对应信息
+            // 如果这些语音都只做进了voiceover.bnk中，那直接删除“otherBanks”这个属性就可以了
+            // 记得删完再去掉上面“visuals”属性值后面的逗号哈，注意json语法，有问题就去看看日志
+            // 添加示例如下：
+            "bankLocation": "audioww/目标文件/inbattle_communication_npc.bnk", 
+            "characters": "mods/gup.subtitles/“另一个目标文件名”/characters.json", 
+            "sentences": "mods/gup.subtitles/“两个目标文件名”/sentences", 
+            "visuals": "mods/gup.subtitles/“可以取一样的名字”/visuals.json"
+        }, 
+        {
+            // 有几个写几个，这里我有两个。注意，这俩“npc”/“pc”包括“voiceover”，都是游戏默认加载的声音银行
+            // 你自己创建的bnk需要使用audio_modes.xml进行加载
+            // 本插件还不支持合并audio_modes.xml中的信息，所以不要添加自建声音银行，没有效果
+            "bankLocation": "audioww/目标文件/inbattle_communication_pc.bnk", 
+            "characters": "mods/gup.subtitles/“另一个目标文件名”/characters.json", 
+            "sentences": "mods/gup.subtitles/“两个目标文件名”/sentences", 
+            "visuals": "mods/gup.subtitles/“可以取一样的名字”/visuals.json"
+            //
+            // 对了，inbattle_communication_npc和inbattle_communication_pc是一对的
+            // 插件会加载voiceover和与它同目录的这俩bnk，如果少了一个，会导致没声音从而使用默认声音
+            // 所以最好要么加一对bnk，要么不加。
+        }
+    ]
+    // 注意json语法规范，请查阅相关资料，或者使用带语法高亮的文本编辑器编写，以避免错误
+    // 最稳妥的办法是直接修改我提供的模板
+    // 这些注释删不删都行，读取的时候会自动清除
+}
