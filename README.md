@@ -5,7 +5,7 @@
 
 它可以读取指定方式打包的语音包，以及字幕语音包，并用它们覆盖掉游戏原有的成员语音。
 
-此外，也可以将游戏内成员语音写入指定文件，通过插件将这些声音重新添加。
+此外，也可以将游戏内成员语音的必要信息写入指定文件，通过插件将这些声音重新添加。
 > 注意：插件集成了坦克世界少女与战车字幕插件的部分文件，与炮声插件和字幕插件不兼容。
 ### 文件结构：
 ```
@@ -31,8 +31,8 @@ autoConfigVoiceOver_0.0.3/
 │    	    │   ├─createTemplate.pyc
 │    	    │   ├─fileSearch.pyc
 │    	    │   ├─myLogger.pyc
-│    	    │   ├─tools.pyc
-│    	    │   └─updateXML.pyc
+│    	    │   ├─updateFile.pyc
+│    	    │   └─tools.pyc
 │    	    └─gui/
 │    	        └─mods/
 │    	            ├─mod_autoConfigVoiceOver.pyc
