@@ -653,7 +653,7 @@ def new_setPlayerVehicle(original_func, self, vehiclePublicInfo, isPlayerVehicle
 def new_onBecomePlayer(original_func, self):
     original_func(self)
     global acv_sent_msg
-    if acv_sent_msg:
+    if acv_sent_msg and g_template.settings['enabled']:
         acv_text = g_template.getNotify()
         if acv_text:
             acv_text_type = SystemMessages.SM_TYPE.MessageHeader
