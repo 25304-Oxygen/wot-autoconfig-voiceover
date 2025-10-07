@@ -84,7 +84,7 @@ class DrawUi(object):
             {'vo': 'IT', 'language': 'italy', 'name': '意大利'},
             {'vo': 'JA', 'language': 'japan', 'name': '日系'}
         ]
-        # 用于在下拉列表中显示的语音模式名，分表归属外部语音和内部语音
+        # 用于在下拉列表中显示的语音模式名，分别归属外部语音和内部语音
         self._outside_vo_option = [{'label': '默认语音'}]
         self._inside_vo_option = [
             {'label': '默认语音'},
@@ -353,8 +353,8 @@ class DrawUi(object):
             {
                 'type': 'CheckBox',
                 'text': '使所有语音在设置菜单中可见',
-                'tooltip': '{HEADER}语音是否可见{/HEADER}{BODY}勾选并保存设置后，你可以在设置菜单的语音选择中，找到已创建的声音模式，并随时更改。'
-                           '\n不过，当车长为特殊成员时，通过设置菜单修改的语音将不会生效。{/BODY}',
+                'tooltip': '{HEADER}语音是否可见{/HEADER}{BODY}勾选并保存设置后，你可以在设置菜单的语音选择中，找到已创建的声音模式，并随时更改。\n{/BODY}'
+                           '{ATTENTION}开启后将暂时关闭屏蔽特殊语音的功能。{/ATTENTION}',
                 'value': self.settings['vo_visible_acv'],
                 'varName': 'vo_visible_acv'
             },
@@ -643,9 +643,10 @@ def new_setPlayerVehicle(original_func, self, vehiclePublicInfo, isPlayerVehicle
     original_func(self, vehiclePublicInfo, isPlayerVehicle)
     # 在战场被创建后才可执行
     arena = avatar_getter.getArena()
-    if not g_template.settings['enabled'] or arena is None:
+    if g_template.settings['vo_visible_acv'] or not g_template.settings['enabled'] or arena is None:
         return
     # 放在最后执行，无论前面设置了什么语音，最后会被改为 apply_vo
+    # 若开启了“使所有语音在设置菜单中可见”，可能需要关闭特殊语音覆盖功能。更换语音有时不应只依靠插件实现
     SoundGroups.g_instance.soundModes.setMode(g_template.apply_vo)
 
 
