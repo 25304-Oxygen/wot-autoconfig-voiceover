@@ -44,7 +44,7 @@ def _api_support():
         return
 
 
-# 准备问候消息，用到了全局声明以修改函数外的参数，问候消息的内容是有关产生冲突的文件、打包不合规的语音包（如果有的话）的信息
+# 准备问候消息，用到了全局声明以修改函数外的参数，问候消息的内容是有关产生冲突的文件
 def prepare_hello_message():
     _api_support()
     global acv_text, acv_text_type, acv_header, _isApiPresent
@@ -74,6 +74,8 @@ def init():
         return
     if not WHERE_AM_I:
         mylogger.error('autoConfigVoiceOver', '没有找到autoConfigVoiceOver，无法找到要读取的信息！请检查插件名称是否被修改！')
+        mylogger.info('autoConfigVoiceOver', '程序初始化终止。')
+        return
     mylogger.info('autoConfigVoiceOver', '获取已安装的语音包信息……')
     g_search.read_from_mod_files()
     mylogger.info('autoConfigVoiceOver', '读取gameSoundModes.json中的信息……')
@@ -97,7 +99,7 @@ def fini():
     # 由于游戏运行过程中，mod文件被打开，因此删除和替换工作需要在游戏进程将要结束后执行
     # 非强制性修改文件，只有当你在游戏中点击提示窗口的更新按钮之后，才会创建临时归档文件temp.zip
     # 无需更新的情况下，也可以通过快速单击图片3次打开更新窗口。
-    # 之后会将settings.json移至res_mods，届时更新信息后游戏将能自动启动
+    # 插件在之后的版本中，会将settings.json移至res_mods，届时更新信息后游戏将能自动启动
     code = g_template.getCode()
     if code == 2:
         bat_path = os.path.join(WHERE_ARE_PARENT, REMOVE_PROCESS)
