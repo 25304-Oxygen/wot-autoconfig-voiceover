@@ -569,6 +569,8 @@ class DrawUi(object):
                     self.apply_vo = vo_msg['vo']
                     self.vo_name = vo_msg['name']
                     mylogger.info('createTemplate', '切换语音：%s [%s]' % (self.vo_name, self.apply_vo))
+                    if self.settings['big_button_acv']:
+                        self._push_vo_msg()
                 else:
                     mylogger.error('createTemplate', '无法切换声音模式%s：该声音尚不存在！请检查语音包路径信息是否错误，或bnk文件是否存在！' % self.apply_vo)
                     text += '<br><font color="#b22222">无法切换！声音模式不存在！</font>'
@@ -583,8 +585,6 @@ class DrawUi(object):
                 self.registerApiSupport()
             # 如果语音没变化，不会重复展示切换通知，仅播放自定义问候语音vo_selected，并将这条信息写入日志
             self._playPreviewSound('vo_selected')
-            if self.settings['big_button_acv']:
-                self._push_vo_msg()
         elif varName == 'vo_test_acv':
             event = self.eventList[value]['id']
             self.settings['vo_test_acv'] = value
