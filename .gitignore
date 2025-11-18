@@ -1,1 +1,11 @@
 .idea/
+
+build/
+
+resources/images/old_default.png
+resources/text/
+resources/remove_old_archive.bat
+
+README_en.md
+
+*.txt
