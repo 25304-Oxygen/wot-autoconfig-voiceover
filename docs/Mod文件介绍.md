@@ -133,18 +133,18 @@ Mod文件名按照以下方案创建：
 
 示例：
 
-```chatinput
+```XML
 <root>
-    <!‐‐ 模组标识符 ‐‐>
+    <!-- 模组标识符 -->
     <id>noname.crosshair</id>
 
-    <!‐‐ 模组版本号 ‐‐>
+    <!-- 模组版本号 -->
     <version>0.2.8</version>
 
-    <!‐‐ 面向玩家的清晰的Mod名 ‐‐>
+    <!-- 面向玩家的清晰的Mod名 -->
     <name>Crosshair</name>
     
-    <!‐‐ Mod描述 ‐‐>
+    <!-- Mod描述 -->
     <description>带有功能1的全新酷炫准星……</description>
 </root>
 ```
@@ -196,12 +196,12 @@ Mod文件名按照以下方案创建：
 
 该文件的格式如下：
 
-```chatinput
+```XML
 <root>
     <Collection>
         <pkg>package1_name.wotmod</pkg>
         <pkg>package2_name.wotmod</pkg>
-        <!‐‐ 直到最后一个文件 ‐‐>
+        <!-- 直到最后一个文件 -->
         <pkg>packageN_name.wotmod</pkg>
     </Collection>
 </root>
