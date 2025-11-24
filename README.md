@@ -13,7 +13,7 @@
 
 为游戏内语音包提供的设置面板
 
-![游戏内语音包设置面板](resources/images/screenshot_ingame_voice.jpg)
+![游戏内语音包设置面板](/resources/images/screenshot_ingame_voice.jpg)
 
 ---
 <br>
@@ -22,7 +22,7 @@
 
 </div>
 
-![第三方语音包设置面板](resources/images/screenshot_outside_voice.jpg)
+![第三方语音包设置面板](/resources/images/screenshot_outside_voice.jpg)
 
 ## 功能介绍
 
