@@ -277,16 +277,17 @@ class Search(object):
         add_sv_msg = ''
 
         voice_namelist = {voice['voiceID']: voice['nickName'] for voice in self._outside_voices}
-        if self.notify_ingame_voices_change:
-            voice_namelist.update({voice['voiceID']: voice['nickName'] for voice in self._ingame_voices})
-            for vo in list(set_iv - set_saved_iv):
-                add_iv_msg += '<br>%s' % voice_namelist[vo]
         sv_list = list(set_sv) + list(set_saved_sv)
         for vo in list(set_ov - set_saved_ov):
             if vo not in sv_list:
                 add_ov_msg += '<br>%s' % voice_namelist[vo]
         for vo in list(set_sv - set_saved_sv):
             add_sv_msg += '<br>%s' % voice_namelist[vo]
+
+        if self.notify_ingame_voices_change:
+            voice_namelist.update({voice['voiceID']: voice['nickName'] for voice in self._ingame_voices})
+            for vo in list(set_iv - set_saved_iv):
+                add_iv_msg = '<br>%s' % voice_namelist[vo] + add_iv_msg
 
         if add_iv_msg or add_ov_msg or add_sv_msg:
             notify_saved_vo += ('%s<font color="#f5ffff">%s</font>'
