@@ -8,4 +8,4 @@ resources/remove_old_archive.bat
 
 README_en.md
 
-*.txt
+/*.txt
