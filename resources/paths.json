@@ -1,0 +1,22 @@
+{
+    "location": {
+        "default.png": "res/mods/autoconfigvoiceover/png/default.png",
+        "audio_mods.xml": "res/mods/autoconfigvoiceover/template/audio_mods.xml",
+        "msg.json": "res/mods/autoconfigvoiceover/template/msg.json",
+        "msg.txt": "res/mods/autoconfigvoiceover/template/msg.txt",
+        "remap_msg.txt": "res/mods/autoconfigvoiceover/template/remap_msg.txt",
+        "remapping.json": "res/mods/autoconfigvoiceover/template/remapping.json",
+        "sbt_.json": "res/mods/autoconfigvoiceover/template/sbt_.json",
+        "vo_.json": "res/mods/autoconfigvoiceover/template/vo_.json"
+    },
+    "mods": {
+        "audio_mods.xml": "templates/audio_mods.xml",
+        "default.png": "images/default.png",
+        "msg.json": "templates/msg.json",
+        "msg.txt": "templates/msg.txt",
+        "remap_msg.txt": "templates/remap_msg.txt",
+        "remapping.json": "templates/remapping.json",
+        "sbt_.json": "templates/sbt_.json",
+        "vo_.json": "templates/vo_.json"
+    }
+}

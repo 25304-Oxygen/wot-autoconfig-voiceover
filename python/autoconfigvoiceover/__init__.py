@@ -1,87 +1,164 @@
 # coding=utf-8
 """
     软件包的构造模块，限制了导入变量。
-    主要作用是初始化一些文件和常量。
+    初始化常量、目录、文件，未初始化的文件：gameSoundModes.json, playEvent.json, settings.json及其副本
 """
-__all__ = ['MODS_PATH', 'WHERE_AM_I', 'MY_MODS_VERSION', 'REMOVE_PROCESS', 'WHERE_ARE_PARENT',
-           'g_search', 'g_update', 'g_template', 'mylogger', 'override']
+__all__ = ['myModsVersion', 'isApiPresent', 'where_am_i', 'MyLogger', 'Notifier', 'override', 'g_search', 'g_update', 'g_template']
 
-from collections import Counter
+import shutil
+from myLogger import *
 from constants import *
-from myLogger import mylogger
-from fileSearch import *
+from collectData import *
 from updateFile import *
+from createTemplate import *
 from tools import *
-try:
-    from createTemplate import *
-except ImportError:
-    pass
+from notifier import Notifier
 
-mylogger.info('__init__', 'mod所在位置：%s' % WHERE_AM_I)
-# 以下代码用于初始化日志文件夹
-if not os.path.exists(TEMPLATE_JSON_PATH):
-    os.chdir(MY_LOG_PATH)
-    os.makedirs('template_json')
-    os.chdir(GAME_ROOT_PATH)
+mylogger = MyLogger('__init__')
+PATHS = [RES_GUP_MODS_PATH, MY_PNG_PATH, MY_JSON_PATH, MY_TEMPLATE_PATH]
+myModsVersion = MY_MODS_VERSION
+isApiPresent = constants.IS_API_PRESENT
+where_am_i = None
+meta = {
+    'id': MY_MODS_ID,
+    'version': MY_MODS_VERSION
+}
 
-if not os.path.exists(VOICEOVER_INFO_PATH):
-    os.chdir(MY_LOG_PATH)
-    os.makedirs('voiceover_info')
-    os.chdir(GAME_ROOT_PATH)
 
-if not os.path.exists(GAME_SOUND_MODES_JSON):
-    with open(GAME_SOUND_MODES_JSON, 'w') as f:
-        f.write(GAME_SOUND_MODES_TEMPLATE)
-    mylogger.info('__init__', '已创建gameSoundModes.json。')
+# 将部分已有数据迁移，而非全部初始化。本次更新改动了配置文件夹，旧的文件和目录将在此被移除。
+# 你所保存的第三方语音包信息，你所添加的图片将被保留并迁移。
+def data_migration(config):
+    # new_config <- config + new (keys, values) 最终放弃了这么做，有点麻烦
+    save_config(DEFAULT_CONFIG)
 
-if not os.path.exists(PLAY_EVENTS_JSON):
-    with open(PLAY_EVENTS_JSON, 'w') as f:
-        f.write(PLAY_EVENTS_TEMPLATE)
-    mylogger.info('__init__', '已创建playEvents.json。')
+    # 将旧版本插件保存的第三方语音包信息迁移至新路径
+    if os.path.exists(INFO_JSON__):
+        with open(INFO_JSON__, 'r') as src, open(VOICEOVER_JSON, 'w') as dest:
+            json_data = jsonLoad(src.read())
+            new_json_data = [
+                dict(item, voiceID=item['voiceID'][4:] if item['voiceID'].startswith('ORV_') else item['voiceID'])
+                for item in json_data
+            ]
+            dest.write(jsonDump(new_json_data))
 
-if not os.path.exists(INFO_JSON):
-    open(INFO_JSON, 'w').close()
-    mylogger.info('__init__', '已创建空的info.json。')
+    for item in os.listdir(MY_LOG_PATH):
+        if item == 'config.json':
+            continue
+        item_path = os.path.join(MY_LOG_PATH, item)
+        if item == 'default.png':
+            shutil.move(item_path, DEFAULT_PNG)
+        # 移除原目录下生成的旧的文件
+        if item in ['default.png', 'update.png', 'gameSoundModes.json', 'playEvents.json']:
+            try:
+                os.remove(item_path)
+            except OSError:
+                pass
 
-if not os.path.exists(DEFAULT_MODES_JSON):
-    msg = {'ZH_CH_volume': CURRENT_VOLUME,
-           'RU_volume': CURRENT_VOLUME,
-           'DE_volume': CURRENT_VOLUME,
-           'EN_volume': CURRENT_VOLUME,
-           'UK_volume': CURRENT_VOLUME,
-           'FR_volume': CURRENT_VOLUME,
-           'CS_volume': CURRENT_VOLUME,
-           'SV_volume': CURRENT_VOLUME,
-           'PL_volume': CURRENT_VOLUME,
-           'IT_volume': CURRENT_VOLUME,
-           'JA_volume': CURRENT_VOLUME}
-    template = INFO_TEMPLATE.format(**msg)
-    with open(DEFAULT_MODES_JSON, 'w') as f:
-        f.write(template)
-    mylogger.info('__init__', '已创建default_modes.json。')
+    # 移除旧文件夹
+    try:
+        if os.path.exists(TEMPLATE_JSON_PATH__):
+            shutil.rmtree(TEMPLATE_JSON_PATH__)
+        if os.path.exists(VOICEOVER_INFO_PATH__):
+            shutil.rmtree(VOICEOVER_INFO_PATH__)
+    except OSError:
+        pass
 
-if Counter(['msg.txt', 'sbtlist_.json', 'sbt_.json', 'volist_.json', 'vo_.json']) != Counter(os.listdir(TEMPLATE_JSON_PATH)):
-    with zipfile.ZipFile(WHERE_AM_I, 'r') as zip_ref:
-        files = ['template_json/msg.txt', 'template_json/sbt_.json', 'template_json/sbtlist_.json', 'template_json/vo_.json', 'template_json/volist_.json']
-        for obj in files:
-            if obj in zip_ref.namelist():
-                zip_ref.extract(obj, MY_LOG_PATH)
-                mylogger.info('__init__', '已将%s解压至日志文件。' % obj)
+
+# 返回 False: 检查并补回缺失文件，对旧版本中保存的数据进行迁移。否则视当前环境为：首次安装插件并运行。
+def support_old_version():
+    if not os.path.exists(CONFIG_JSON):
+        return True
+    try:
+        with open(CONFIG_JSON, 'r') as src:
+            config = jsonLoad(src.read())
+        if config['__version__'] < MY_MODS_CONFIG_VERSION:
+            data_migration(config)
+        else:
+            constants.SHOW_DETAILS = config['show_details']
+    except (TypeError, ValueError):
+        save_config(DEFAULT_CONFIG)
+        mylogger.warn('配置信息读取出错，已生成默认的配置文件。')
+        return False
+    return False
+
+
+# 初始化文件、版本支持
+def init_files():
+    if not constants.WHERE_AM_I:
+        mylogger.warn('找不到mod！检查wotmod文件是否丢失meta.xml！')
+        return
+
+    with zipfile.ZipFile(constants.WHERE_AM_I, 'r') as zip_ref:
+        try:
+            json_data = zip_ref.read(PATHS_JSON)
+        except KeyError:
+            mylogger.warn('在%s中找不到paths.json！' % constants.WHO_AM_I)
+            return
+
+        extract_all = support_old_version()
+        paths = jsonLoad(json_data)
+
+        # 绝对路径需要先从 constants 中获取前缀并拼接形成
+        # 这里从字典中生成新字典，取出文件名并将它们的相对路径转换为绝对路径，最后合并字典
+        f_loca = paths['location']
+        f_dest = dict(
+            [(obj, MY_LOG_PATH + '/' + dest) for obj, dest in paths['mods'].iteritems()]
+        )
+        extract_mapping = {
+            item: (f_loca[item], f_dest[item])
+            for item in set(f_loca) & set(f_dest)
+        }
+
+        # 被认定为“首次安装并运行”
+        if extract_all:
+            for item, (data, extr_path) in extract_mapping.iteritems():
+                if data in zip_ref.namelist():
+                    with open(extr_path, 'wb') as f:
+                        f.write(zip_ref.read(data))
+                else:
+                    mylogger.warn('在mod中找不到文件%s' % os.path.basename(item))
+
+            # 此处继续完成初始化，因为配置文件不存在
+            save_config(DEFAULT_CONFIG)
+            mylogger.info('\n~~~~~~~~~~~~~~~~~~~~~~~~~'
+                          '\n欢迎下载和使用语音包管理插件'
+                          '\n~~~~~~~~~~~~~~~~~~~~~~~~~')
+            return
+
+        # 部分文件恢复为默认
+        file_list = {'default.png', 'audio_mods.xml', 'remapping.json', 'msg.json', 'msg.txt', 'sbt_.json', 'vo_.json'}
+        missing_file = list(
+            file_list - set(os.listdir(MY_PNG_PATH)) - set(os.listdir(MY_TEMPLATE_PATH)) - set(os.listdir(RES_MODS_ROOT_PATH))
+        )
+        for item in missing_file:
+            data, extr_path = extract_mapping[item]
+            if data in zip_ref.namelist():
+                with open(extr_path, 'wb') as f:
+                    f.write(zip_ref.read(data))
             else:
-                mylogger.warn('__init__', '未在mod文件中找到模板文件%s！' % obj.split('/')[1])
+                mylogger.warn('在mod中找不到文件%s' % os.path.basename(item))
 
-if not os.path.exists(DEFAULT_PNG):
-    with zipfile.ZipFile(WHERE_AM_I, 'r') as zip_ref:
-        obj = 'default.png'
-        if obj in zip_ref.namelist():
-            zip_ref.extract(obj, MY_LOG_PATH)
-        else:
-            mylogger.warn('__init__', '未在mod文件中找到默认图片default.png。')
 
-if not os.path.exists(UPDATE_PNG):
-    with zipfile.ZipFile(WHERE_AM_I, 'r') as zip_ref:
-        obj = 'update.png'
-        if obj in zip_ref.namelist():
-            zip_ref.extract(obj, MY_LOG_PATH)
-        else:
-            mylogger.warn('__init__', '未在mod文件中找到默认图片update.png')
+# 模块级代码由此开始，初始化目录与常量
+for parent, dir_names, filenames in os.walk(MODS_PATH):
+    constants.MOD_FILES_DICT.update({
+        obj_file: os.path.join(parent, obj_file) for obj_file in filenames
+        if obj_file.endswith('.wotmod')
+    })
+
+for name, path in constants.MOD_FILES_DICT.iteritems():
+    if check_from_meta(path, meta):
+        constants.WHO_AM_I = name
+        constants.WHERE_AM_I = path
+        constants.WHERE_ARE_PARENT = os.path.dirname(path)
+        where_am_i = path
+        break
+
+for path in PATHS:
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+init_log()
+mylogger.debug('mod所在位置：%s' % constants.WHERE_AM_I)
+
+init_files()

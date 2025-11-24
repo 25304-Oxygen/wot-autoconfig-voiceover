@@ -1,0 +1,10 @@
+{
+    // 为语音包设置重映射方案
+    // 左值（leval / key）：Wwise 事件名
+    // 右值（rival / value）：更改后的名称。若为空，该事件的语音将被屏蔽
+    //
+    // 示例：修改灯泡语音 1，灯泡语音 2
+    //
+    "lightbulb": "lightbulb_mod",
+    "lightbulb_02": "lightbulb_02_mod"
+}

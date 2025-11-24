@@ -1,0 +1,64 @@
+{
+    "meta_acv": {
+        "id": "autoConfigVoiceOver",
+        "version": "",
+        "name": "Voiceover Management Plugin",
+        "description": "将第三方语音包添加进游戏，并提供语音切换等功能，作者[bilibili]下一个车站等你"
+    },
+    "meta_rmp": {
+        "id": "soundRemapping",
+        "version": "",
+        "name": "sound remapping",
+        "description": "替代audio_mods.xml，支持动态修改重映射方案，作者[bilibili]下一个车站等你"
+    },
+    "paths": {
+        "gup_subtitles.swf": "resources/gup_mod/v1.0.0/gup_subtitles.swf",
+        "mod_gup_subtitles.pyc": "resources/gup_mod/v1.0.0/mod_gup_subtitles.pyc",
+        "mod_autoConfigVoiceOver.pyc": "python/mod_autoConfigVoiceOver.pyc",
+        "mod_soundRemapping.pyc": "python/mod_soundRemapping.pyc",
+        "__init__.pyc": "python/autoconfigvoiceover/__init__.pyc",
+        "collectData.pyc": "python/autoconfigvoiceover/collectData.pyc",
+        "constants.pyc": "python/autoconfigvoiceover/constants.pyc",
+        "createTemplate.pyc": "python/autoconfigvoiceover/createTemplate.pyc",
+        "myLogger.pyc": "python/autoconfigvoiceover/myLogger.pyc",
+        "notifier.pyc": "python/autoconfigvoiceover/notifier.pyc",
+        "template.pyc": "python/autoconfigvoiceover/template.pyc",
+        "tools.pyc": "python/autoconfigvoiceover/tools.pyc",
+        "updateFile.pyc": "python/autoconfigvoiceover/updateFile.pyc",
+        "default.png": "resources/images/default.png",
+        "audio_mods.xml": "resources/template/audio_mods.xml",
+        "msg.json": "resources/template/msg.json",
+        "msg.txt": "resources/template/msg.txt",
+        "remap_msg.txt": "resources/template/remap_msg.txt",
+        "remapping.json": "resources/template/remapping.json",
+        "sbt_.json": "resources/template/sbt_.json",
+        "vo_.json": "resources/template/vo_.json",
+        "paths.json": "resources/paths.json"
+    },
+    "files_acv": {
+        "gup_subtitles.swf": "res/gui/flash/gup_subtitles.swf",
+        "mod_gup_subtitles.pyc": "res/scripts/client/gui/mods/mod_gup_subtitles.pyc",
+        "mod_autoConfigVoiceOver.pyc": "res/scripts/client/gui/mods/mod_autoConfigVoiceOver.pyc",
+        "__init__.pyc": "res/scripts/client/autoconfigvoiceover/__init__.pyc",
+        "collectData.pyc": "res/scripts/client/autoconfigvoiceover/collectData.pyc",
+        "constants.pyc": "res/scripts/client/autoconfigvoiceover/constants.pyc",
+        "createTemplate.pyc": "res/scripts/client/autoconfigvoiceover/createTemplate.pyc",
+        "myLogger.pyc": "res/scripts/client/autoconfigvoiceover/myLogger.pyc",
+        "notifier.pyc": "res/scripts/client/autoconfigvoiceover/notifier.pyc",
+        "template.pyc": "res/scripts/client/autoconfigvoiceover/template.pyc",
+        "tools.pyc": "res/scripts/client/autoconfigvoiceover/tools.pyc",
+        "updateFile.pyc": "res/scripts/client/autoconfigvoiceover/updateFile.pyc",
+        "default.png": "res/mods/autoconfigvoiceover/png/default.png",
+        "audio_mods.xml": "res/mods/autoconfigvoiceover/template/audio_mods.xml",
+        "msg.json": "res/mods/autoconfigvoiceover/template/msg.json",
+        "msg.txt": "res/mods/autoconfigvoiceover/template/msg.txt",
+        "remap_msg.txt": "res/mods/autoconfigvoiceover/template/remap_msg.txt",
+        "remapping.json": "res/mods/autoconfigvoiceover/template/remapping.json",
+        "sbt_.json": "res/mods/autoconfigvoiceover/template/sbt_.json",
+        "vo_.json": "res/mods/autoconfigvoiceover/template/vo_.json",
+        "paths.json": "res/mods/autoconfigvoiceover/paths.json"
+    },
+    "files_rmp": {
+        "mod_soundRemapping.pyc": "res/scripts/client/gui/mods/mod_soundRemapping.pyc"
+    }
+}

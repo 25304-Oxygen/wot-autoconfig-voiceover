@@ -1,0 +1,27 @@
+<audio_mods.xml>
+    <loadBanks>
+		<bank>
+			<name/>
+		</bank>
+	</loadBanks>
+	<events>
+	<!-- 为语音包设置重映射方案 -->
+	<!-- Set the remapping scheme from here -->
+		<!-- 为要修改的某事件创建一个“event”标签 -->
+		<!-- Create an event tag for Each event you want to replace -->
+		<event>
+			<!-- 填入它的 Wwise 事件名 -->
+			<!-- Target event -->
+			<name>lightbulb</name>
+			<!-- 填入你创建的 Wwise 事件名 -->
+			<!-- It will be replaced by your event -->
+			<mod>lightbulb_mod</mod>
+			<!-- 灯泡语音1将被更换 -->
+			<!-- The bulbVoice 1 is replaced now -->
+		</event>
+		<event>
+			<name>lightbulb_02</name>
+			<name>lightbulb_02_mod</name>
+		</event>
+	</events>
+</audio_mods.xml>

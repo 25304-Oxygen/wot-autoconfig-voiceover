@@ -1,71 +1,86 @@
-## 坦克世界语音包管理插件
-### 简介：
-为了能使我自制的字幕语音包彼此之间可以兼容，我制作了这个插件。
-<br>（字幕效果借助官方插件实现）
+# 坦克世界语音包管理插件
 
-它可以读取指定方式打包的语音包，以及字幕语音包，并用它们覆盖掉游戏原有的成员语音。
+## 简介
 
-此外，也可以将游戏内成员语音的必要信息写入指定文件，通过插件将这些声音重新添加。
-> 注意：插件集成了坦克世界少女与战车字幕插件的部分文件，与炮声插件和字幕插件不兼容。
-### 文件结构：
-```
-autoConfigVoiceOver_0.0.3/
-├─res/
-│   ├─audioww/
-│   │   ├─audio_mods.xml
-│   │   │ # 用于修改灯泡语音，它会使游戏内灯泡等部分声音丢失
-│   │   ├─inbattle_communication_npc.bnk   用于补回这些丢失的声音
-│   │   └─inbattle_communication_pc.bnk
-│   │     # 如要使用默认语音，移除audioww及下文件
-│   ├─gui/
-│   │   └─flash/
-│   │      └─gup_subtitles.swf     wot字幕插件中的文件
-│   ├─mods/
-│   │   └─gup.subtitles/
-│   │      └─settings.json     wot字幕插件中的文件
-│   └─scripts/
-│       └─client/
-│           ├─autoconfigvoiceover/
-│    	    │   ├─__init__.pyc
-│    	    │   ├─constants.pyc
-│    	    │   ├─createTemplate.pyc
-│    	    │   ├─fileSearch.pyc
-│    	    │   ├─myLogger.pyc
-│    	    │   ├─updateFile.pyc
-│    	    │   └─tools.pyc
-│    	    └─gui/
-│    	        └─mods/
-│    	            ├─mod_autoConfigVoiceOver.pyc
-│    	            └─mod_gup_subtitles.pyc     wot字幕插件中的文件
-├─template_json/    用于创建可读的第三方语音包的模板文件
-│   ├─msg.txt
-│   ├─sbt_.json
-│   ├─sbtlist_.json
-│   ├─vo_.json
-│   └─volist_.json
-├─default.png       用于展示的默认图片
-├─meta.xml
-├─remove_old_archive.bat    更新程序的一部分：写入信息后，移除旧的mod
-└─update.png        在需要更新时用于展示的图片
-```
-自行编译并打包为.wotmod文件，并安装依赖mod：modsSettingsApi、modsListApi、openwg.gameface
+这是一个专注于《坦克世界》各种来源语音包之间的兼容与相互切换的mod。
 
-或从release中下载。
-### 可识别的第三方语音包：
-- 以“voiceover_”开头的.wotmod文件
-- 包含一个template_json文件夹中的json文件并将其重命名
-<br>例如vo_test.json（可以在任意位置）
-- 填入json文件的信息正确
+它将语音包根据来源划分为“游戏内语音”和“已安装语音”，并根据你所在的客户端生成游戏内语音包列表。
+它使用`ModsSettingsAPI`绘制交互界面。
 
-此外，你还可以为其添加：一个图片用于切换后展示、一个wwise事件在切换时播放、一条消息在切换后发送。
+## 预览
 
-图片命名为：“default.png”，推荐使用300×300像素大小的半透明图片。
-<br>创建msg.txt并写入信息作为自定义消息。支持font标签的color属性、br标签、b标签
-<br>将上述两个文件放入语音包同级目录即可
-<br>用于播放的自定义wwsie事件名为：“vo_selected”
-### 关于插件的更多信息：
-作者b站账号：[下一个车站等你](https://space.bilibili.com/375281099)
+<div align="center">
 
-视频介绍：[坦克世界语音包管理插件，一键强制切换语音，语音包之间不再有冲突](https://www.bilibili.com/video/BV1mAbhzXEZS)
-### 结尾：
-尚不支持国际化，插件显示的语言：简体中文。 目前插件还待进一步更新与优化。
+为游戏内语音包提供的设置面板
+
+![游戏内语音包设置面板](resources/images/screenshot_ingame_voice.jpg)
+
+---
+<br>
+
+为你添加的第三方语音包提供的设置面板
+
+</div>
+
+![第三方语音包设置面板](resources/images/screenshot_outside_voice.jpg)
+
+## 功能介绍
+
+### 针对游戏内语音：
+
+- 切换语音包时自动应用已保存的音量方案。
+- 试听声音，事件播放列表保存在**配置文件夹**[^1]/jsons/`playEvent.json`，这些信息可以任你修改。
+- 可以使用客户端中所有的语音包，包含系别语音，这个语音包列表将自动扩容。
+- 系别语音可以切换成员性别；特殊语音可以使用特殊模式：切换车长/车组语音、使用其他语言版本。
+- 游戏内语音包信息保存在**配置文件夹**[^1]/jsons/`gameSoundModes.json`，这些信息可以任你修改。
+- 使语音包在设置菜单中可见，不过因为它们没有名字，你实际上会看到一篇空白。
+
+### 针对第三方语音包：
+
+- 基础的自动切换音量、试听事件、语音可见。
+- 支持添加多个字幕语音包，字幕效果使用官方插件实现。
+- 第三方语音包信息保存在**配置文件夹**[^1]/jsons/`voiceover.json`，你仅能修改音量。
+- 切换语音包时，播放语音包中的**选中语音**[^2]，并弹出一条来自语音包的自定义消息。
+- 切换语音包时，将语音包中的图片展示在右侧。
+- 切换语音包时，自动切换声音重映射。你可以在语音包中设置映射方案，该功能也可以关闭。
+- 点击“查看映射”后，弹出语音包的重映射说明。
+- 自定义消息支持部分`HTML`语法，为超链接注册了处理函数，使接收到的消息中的链接可点击。
+
+## 构建、安装与使用说明
+
+### 构建：
+
+运行`build.py`，在build文件夹生成mod文件：一个mod本体，另一个是提供重映射功能的mod。
+
+实际使用中发现，官方插件1.2.1版本更新后字幕淡出效果存在不小的延迟，有粘滞感，因此插件集成的是1.2.1版本之前的字幕插件。
+你可以在`build.json`中修改“paths”中对应的值，使用不同版本字幕插件。
+
+你也可以在`release`中下载，默认使用1.2.1版本之前的字幕插件。
+
+### 安装：
+
+将mod本体、重映射功能mod、`ModsSettingsApi`、`modsListApi`、`openwg.gameface`这五个文件放入
+`<坦克世界安装目录>/mods/<当前版本号文件夹>/`中任意位置即可。
+
+### 冲突说明：
+
+因包含[官方《少女与战车》字幕语音包插件](https://wgmods.net/6725/)中的flash文件与python文件，与该插件不兼容。
+
+
+### [可识别的第三方语音包：](docs/打包教程.md)
+- 前缀为`voiceover_`的特殊格式的`.wotmod`文件；
+- 包含一个特定格式的`json`文件用于识别与读取。
+
+### [了解WOTMOD文件：](docs/Mod文件介绍.md)
+
+制作插件可识别语音包的基础。
+
+### 关于作者：
+
+我的bilibili账号：[@下一个车站等你](https://space.bilibili.com/375281099)
+
+## 结尾：
+尚不支持国际化，插件显示的语言：简体中文。
+
+[^1]: 坦克世界安装目录/mods/configs/autoConfigVoiceOver
+[^2]: 这是一个我自定义的Wwise事件“vo_selected”，你可以为其添加多条语音，在语音包被选中后播放
