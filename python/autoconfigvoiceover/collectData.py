@@ -60,7 +60,7 @@ def _get_voice_info(v_type, data, filename):
         path = data['bankPath']
         if path <= 14:
             raise UnsupportedBnkPath
-        # 去除 “/voiceover.bnk“
+        # 去除 “/voiceover.bnk”
         language = path[:-14]
         name = language
         invisible = True
