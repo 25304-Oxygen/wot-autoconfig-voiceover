@@ -353,6 +353,11 @@ class DrawUi(object):
         for key, value in self.config.items():
             new_config.setdefault(key, value)
 
+        if new_config['vo_list_option'] == self.voice_data['option']:
+            new_config['current_voice'] = self.voice_data['index']
+        else:
+            new_config['current_voice'] = 0
+
         if not self.config['enabled'] and new_config['enabled']:
             g_update.replace_sound_modes()
             self.config['enabled'] = True
@@ -372,6 +377,8 @@ class DrawUi(object):
             _set_volume(constants.CURRENT_VOLUME)
             _analyse_config(new_config, enabled=False)
             self.config = new_config
+            new_config['current_voice'] = self.voice_data['voiceID']
+            save_config(new_config)
             mylogger.info('插件已禁用。')
             if notify:
                 SystemMessages.pushMessage('游戏语音状态将恢复为默认。', type=info_type, messageData={'header': '插件已禁用'})
@@ -387,8 +394,9 @@ class DrawUi(object):
                 g_remap_ctrl.reset_remapping()
         if self.config['ingame_voice_visible'] != new_config['ingame_voice_visible'] or self.config['outside_voice_visible'] != new_config['outside_voice_visible']:
             _analyse_config(new_config)
-        new_config['current_voice'] = self.voice_data['index']
+
         self.config = new_config
+        new_config['current_voice'] = self.voice_data['voiceID']
         save_config(new_config)
         # 刷新界面
         self._on_voice_load(self.config['vo_list_option'])
