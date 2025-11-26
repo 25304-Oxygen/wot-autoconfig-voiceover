@@ -193,8 +193,11 @@ class UpdateManager(object):
         else:
             for item in nation_sec.values():
                 nation = item.readString('name')
+
+                # 这个在客户端中是“默认”系别语音，需要单独处理
                 if nation == 'default':
-                    continue
+                    nation = 'ussr'
+
                 nations.append(nation)
                 sound_mode = item.readString('soundMode')
                 namelist_by_nation.append(sound_mode)
