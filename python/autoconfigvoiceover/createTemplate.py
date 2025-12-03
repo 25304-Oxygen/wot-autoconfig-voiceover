@@ -395,7 +395,7 @@ class DrawUi(object):
         if self.config['ingame_voice_visible'] != new_config['ingame_voice_visible'] or self.config['outside_voice_visible'] != new_config['outside_voice_visible']:
             _analyse_config(new_config)
 
-        self.config = new_config
+        self.config = new_config[:]
         new_config['current_voice'] = self.voice_data['voiceID']
         save_config(new_config)
         # 刷新界面
