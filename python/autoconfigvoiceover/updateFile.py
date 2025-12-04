@@ -73,14 +73,15 @@ def _get_all_namelist():
             first_names = item['firstNames']
             last_names = item['lastNames']
             key = first_names.keys()[0]
+            first_n = _ms(first_names.readString(key))
             last_n = _ms(last_names.readString(key))
-            if last_n:
+            if first_n and last_n:
                 # 这里使用游戏默认的名字在前，姓氏在后
                 # 姓氏在前名在后更符合东亚人习惯，但是许多名字大家已耳熟，加上亚洲成员并不多，这里保持默认
                 # 不过你可以在gameSoundModes.json中对其二次编辑，这个文件通常情况下仅读取并扩充
-                nickname = _ms(first_names.readString(key)) + ' ' + last_n
+                nickname = first_n + ' ' + last_n
             else:
-                nickname = _ms(first_names.readString(key))
+                nickname = first_n + last_n
             # 我不能理解，为什么有的成员名字不在po文件中，它们的值居然是空值
             if nickname:
                 commanders[name] = nickname
@@ -136,6 +137,7 @@ def _save_subtitle_vices_info():
             f.write(json_data)
     with open(SETTINGS_JSON_COPY, 'w') as f:
         f.write(json_data)
+
 
 def _save_ingame_voices_info(obj):
     copy = obj[:]   # 这是完全没有必要的
@@ -216,7 +218,7 @@ class UpdateManager(object):
 
         g_search._ingame_voices = self._new_ingame_voices_list()
         self.__extra_dict = _load_sound_outside()
-        self.__origin_sound_modes_dict = SoundGroups.g_instance.soundModes._SoundModes__modes
+        self.__origin_sound_modes_dict = SoundGroups.g_instance.soundModes._SoundModes__modes.copy()
         _save_subtitle_vices_info()
         g_search.compare()
         _save_ingame_voices_info(g_search._ingame_voices)
@@ -263,6 +265,15 @@ class UpdateManager(object):
 
     def recover_sound_modes(self):
         SoundGroups.g_instance.soundModes._SoundModes__modes = self.__origin_sound_modes_dict
+
+    def reset_display_name(self, voice_list):
+        key_list = SoundGroups.g_instance.soundModes._SoundModes__modes.keys()
+        for data in voice_list:
+            vid = data['voiceID']
+            i10n = data['nickName']
+            if vid in key_list:
+                SoundGroups.g_instance.soundModes._SoundModes__modes[vid].description = i10n
+        mylogger.debug('已修改内置语音显示名称。')
 
 
 g_update = UpdateManager()
