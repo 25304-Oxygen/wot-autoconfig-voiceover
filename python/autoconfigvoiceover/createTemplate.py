@@ -28,7 +28,7 @@ iv_labels = []
 ov_labels = []
 vo_list_with_default = []
 info_type = SM_TYPE.InformationHeader
-message_type = SM_TYPE.MessageHeader
+msg_type = SM_TYPE.MessageHeader
 header = ''
 text = '插件运行时出现意外。'
 text_type = SM_TYPE.ErrorSimple
@@ -214,8 +214,6 @@ class DrawUi(object):
         self._preview_sound = None
         self._cycler = None
         self.apply_vo = 'default'
-        self._last_click_time = 0
-        self._click_times = 0
 
     def _clear_preview_sound(self):
         if self._preview_sound is not None:
@@ -322,7 +320,7 @@ class DrawUi(object):
             msg = '' if self.voice_data['option'] else '[%s][%s]' % (cl, tag)
             head = '<font color="#cc9933"><b>切换语音：%s</b></font>' % self.voice_data['nickName']
             if notify and preview_mode != mode_name:
-                SystemMessages.pushMessage(msg, type=message_type, messageData={'header': head})
+                SystemMessages.pushMessage(msg, type=msg_type, messageData={'header': head})
             # 创建一个无限迭代器，用于依次获取下一条元素
             if self.voice_data['custom_msg']:
                 self._cycler = itertools.cycle(self.voice_data['custom_msg'])
@@ -360,11 +358,12 @@ class DrawUi(object):
 
         if not self.config['enabled'] and new_config['enabled']:
             g_update.replace_sound_modes()
+            g_update.reset_display_name(clone_iv_list)
             self.config['enabled'] = True
             mylogger.info('插件已启用。')
             self._on_voice_selected(check=False)
             if notify:
-                SystemMessages.pushMessage('试试各种语音包吧！', type=message_type, messageData={'header': '插件已启用'})
+                SystemMessages.pushMessage('试试各种语音包吧！', type=msg_type, messageData={'header': '插件已启用'})
         elif not new_config['enabled']:
             # 该状态可随时复原
             g_update.recover_sound_modes()
@@ -395,7 +394,7 @@ class DrawUi(object):
         if self.config['ingame_voice_visible'] != new_config['ingame_voice_visible'] or self.config['outside_voice_visible'] != new_config['outside_voice_visible']:
             _analyse_config(new_config)
 
-        self.config = new_config[:]
+        self.config = new_config.copy()
         new_config['current_voice'] = self.voice_data['voiceID']
         save_config(new_config)
         # 刷新界面
@@ -471,8 +470,8 @@ class DrawUi(object):
             if not isRemapCtrlPresent:
                 msg = '找不到该模块。请检查是否安装了soundRemapping'
                 head = '无法启用动态重映射'
-                msg_type = SM_TYPE.ErrorHeader
-                SystemMessages.pushMessage(msg, type=msg_type, messageData={'header': head})
+                msg_header = SM_TYPE.ErrorHeader
+                SystemMessages.pushMessage(msg, type=msg_header, messageData={'header': head})
                 return
             if not self.voice_data['remap']:
                 SystemMessages.pushMessage('', type=info_type, messageData={'header': '这个语音包没有使用重映射。'})
@@ -481,7 +480,7 @@ class DrawUi(object):
                 SystemMessages.pushMessage('', type=info_type, messageData={'header': '这个语音包作者很懒，没有给出语音替换说明。'})
                 return
             msg = self.voice_data['rmp_msg']
-            SystemMessages.pushMessage(msg, type=message_type, messageData={
+            SystemMessages.pushMessage(msg, type=msg_type, messageData={
                 'header': '<font color="#e0ffff"><b>重映射信息</b></font>'})
             mylogger.debug(msg)
 
@@ -528,10 +527,12 @@ class DrawUi(object):
             header = ('<font color="#cc9933"><b>当前语音：</b></font>'
                       '<font color="#e0ffff"><b>%s</b></font>') % self.voice_data['nickName']
             text = g_search.message + '<br><font color="#00ff00">- 插件启用中 -</font>'
-            text_type = message_type
+            text_type = msg_type
 
         # 不知何故，需要为添加的新语音再次设置显示效果，否则默认将可见
         _analyse_config(self.config)
+
+        g_update.reset_display_name(clone_iv_list)
 
         # 在版本更新后，初始化字幕插件以获取字幕效果支持。此处两个json的绝对路径均可
         if g_search.update:
