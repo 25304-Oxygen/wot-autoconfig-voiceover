@@ -85,11 +85,9 @@ CONFIG_TEMPLATE = """{{
     
     //
     // 声音模式是否在设置菜单可见，开启后语音覆盖功能将暂时关闭
-    // 设置游戏自带的语音包是否可见，这个列表会很长，而且是空白的，建议不要开
+    // 设置游戏自带的语音包是否可见，这个列表会很长
     // Display voice options in the settings menu and disable voice overlay
     // outside voice equals 3rd-part voice pack.
-    //
-    // Actually, you will see a blank list. I just kept this feature.
     //
     // Valid values (the same applies below): true/false
     //
@@ -412,8 +410,7 @@ def column_b_ingame_voices(config, voice_data):
             'type': 'CheckBox',
             'text': '使游戏内语音包可见',
             'tooltip': '{HEADER}将语音包添加到设置菜单选项中{/HEADER}'
-                       '{BODY}勾选并保存设置后，你可以在设置菜单的语音选择中，找到游戏内已有的语音，并随时更改。'
-                       '\n不过因为标准语音以外的语音没有设置显示名字，你实际上会看到一片空白。\n{/BODY}'
+                       '{BODY}勾选并保存设置后，你可以在设置菜单的语音选择中，找到游戏内已有的语音，并随时更改。{/BODY}'
                        '{ATTENTION}开启后将暂时关闭屏蔽特殊语音的功能。{/ATTENTION}',
             'value': config['ingame_voice_visible'],
             'varName': 'ingame_voice_visible'
