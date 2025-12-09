@@ -255,10 +255,8 @@ PLAY_EVENTS_TEMPLATE = [{
     "id": "ibc_vo_npc_request_retreat"
 }]
 
-EVENTS_LIST = [{'label': item['name']} for item in PLAY_EVENTS_TEMPLATE]
 
-
-def column_a_ingame_voices(config, iv_list, voice_data):
+def column_a_ingame_voices(config, iv_list, voice_data, EVENTS_LIST):
     return [
         {
             'type': 'Label',
@@ -446,7 +444,7 @@ def column_b_ingame_voices(config, voice_data):
     ]
 
 
-def column_a_outside_voices(config, ov_list, voice_data):
+def column_a_outside_voices(config, ov_list, voice_data, EVENTS_LIST):
     return [
         {
             'type': 'Label',
