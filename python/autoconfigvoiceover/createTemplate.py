@@ -22,6 +22,7 @@ modLinkage = constants.MY_MODS_LINKAGE
 displayName = template.MY_MODS_DISPLAY_NAME
 isRemapCtrlPresent = False
 default_lang = SoundGroups.g_instance.soundModes._SoundModes__modes['default'].voiceLanguage
+event_list = []
 clone_iv_list = []
 clone_ov_list = []
 iv_labels = []
@@ -214,6 +215,7 @@ class DrawUi(object):
         self._preview_sound = None
         self._cycler = None
         self.apply_vo = 'default'
+        self.events = []
 
     def _clear_preview_sound(self):
         if self._preview_sound is not None:
@@ -255,10 +257,10 @@ class DrawUi(object):
     # 刷新界面
     def _on_voice_load(self, value):
         if value:
-            column_a = template.column_a_outside_voices(self.config, ov_labels, self.voice_data)
+            column_a = template.column_a_outside_voices(self.config, ov_labels, self.voice_data, event_list)
             column_b = template.column_b_outside_voices(self.config, self.voice_data)
         else:
-            column_a = template.column_a_ingame_voices(self.config, iv_labels, self.voice_data)
+            column_a = template.column_a_ingame_voices(self.config, iv_labels, self.voice_data, event_list)
             column_b = template.column_b_ingame_voices(self.config, self.voice_data)
         my_template = {
             'modDisplayName': displayName,
@@ -419,7 +421,7 @@ class DrawUi(object):
 
         elif varName == '__event__':
             self.config['__event__'] = value
-            event = template.PLAY_EVENTS_TEMPLATE[value]['id']
+            event = self.events[value]['id']
             self._play_preview_sound(event)
             self._on_voice_load(self.config['vo_list_option'])
 
@@ -497,7 +499,7 @@ class DrawUi(object):
                 self._play_preview_sound(constants.VOICE_SELECTED_EVENT)
 
     def run(self):
-        global clone_iv_list, clone_ov_list, vo_list_with_default, header, text, text_type, iv_labels, ov_labels
+        global clone_iv_list, clone_ov_list, vo_list_with_default, header, text, text_type, iv_labels, ov_labels, event_list
         with open(constants.CONFIG_JSON, 'r') as src:
             self.config = jsonLoad(src.read())
         # 这个不加也行，后面这个属性自己会出现
@@ -510,6 +512,9 @@ class DrawUi(object):
         # 为“已安装的语音包”下拉列表添加默认语音项，该项将单独视为位于“游戏内语音包”下拉列表
         vo_list_with_default = [g_search.get_default_voice()] + clone_ov_list
         ov_labels = [{'label': item['nickName']} for item in vo_list_with_default]
+
+        self.events = g_search.event_list
+        event_list = [{'label': item['name']} for item in self.events]
 
         g_update.replace_sound_modes()
         self.voice_data = _get_voice_data(self.config)
