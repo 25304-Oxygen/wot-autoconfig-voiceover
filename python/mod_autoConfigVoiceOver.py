@@ -16,7 +16,8 @@ header = '<font color="#cc9933"><b>语音包管理插件</b></font>'
 msg_sent = False
 
 
-# 等待客户端统一调用的方法，除此之外还有 fini 和 event
+# 等待客户端统一调用的方法，除此之外还有 fini 和部分事件的同名函数：
+# onConnected、onAccountBecomePlayer、onAccountShowGUI、onAccountBecomeNonPlayer、onDisconnected
 def init():
     global text, text_type
     if not isApiPresent:
