@@ -265,8 +265,10 @@ class Search(object):
             if constants.SHOW_DETAILS:
                 notify_saved_vo += '<font color="#edeaea">%s</font><font color="#fff0f5">%s</font><br>' % (saved_ov_msg, saved_sv_msg)
             else:
-                notify_saved_vo += '<br><font color="#edeaea">%s</font>' % ('语音包：' + str(count_ov)) if count_ov else None
-                notify_saved_vo += '<br><font color="#fff0f5">%s</font>' % ('字幕语音包：' + str(count_sv)) if count_sv else None
+                if count_ov:
+                    notify_saved_vo += '<br><font color="#edeaea">%s</font>' % ('语音包：' + str(count_ov))
+                if count_sv:
+                    notify_saved_vo += '<br><font color="#fff0f5">%s</font>' % ('字幕语音包：' + str(count_sv))
                 notify_saved_vo += '<br>'
         else:
             notify_saved_vo += '<br>啊嘞？你没有装语音包吗？<br>'
