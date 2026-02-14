@@ -6,15 +6,15 @@ import os.path
 import ResMgr
 MY_MODS_ID = 'autoConfigVoiceOver'
 MY_MODS_LINKAGE = 'auto_config_voiceover'
-MY_MODS_VERSION = '0.0.7'
-MY_MODS_CONFIG_VERSION = 3
+MY_MODS_VERSION = '0.0.7b'
+MY_MODS_CONFIG_VERSION = 4
 VOICE_SELECTED_EVENT = 'vo_selected'                                            # 选中语音并应用后，将播放的一个 Wwise 事件
 TANKMEN_XML_ROOT_PATH = 'scripts/item_defs/tankmen/'                            # ResMgr 中的虚拟路径
 SPECIAL_VOICES_XML = 'scripts/item_defs/special_voices.xml'                     # 游戏中保存特殊成员语音信息的资源文件
 MAIN_SOUND_MODES_XML = 'gui/soundModes/main_sound_modes.xml'                    # 游戏中保存全部声音模式的资源文件
 MY_MODS_RES_DEFAULT_PNG = 'mods/autoconfigvoiceover/png/default.png'            # 插件中的资源文件
 PATHS_JSON = 'res/mods/autoconfigvoiceover/paths.json'
-GUP_SETTINGS_FILE = 'mods/gup.subtitles/settings.json'                          # 虚拟内存中的json
+GUP_SETTINGS_FILE = 'mods/gup.subtitles/settings.json'                          # 已经不需要了
 GAME_ROOT_PATH = os.path.normpath(ResMgr.resolveToAbsolutePath('../..'))        # F:/World_of_Tanks_CN 以坦克世界 2.0 版本为例
 RES_MODS_ROOT_PATH = os.path.normpath(ResMgr.resolveToAbsolutePath('.'))        # F:/World_of_Tanks_CN/res_mods/2.0.0.0
 RES_GUP_MODS_PATH = os.path.join(RES_MODS_ROOT_PATH, 'mods', 'gup.subtitles')   # ../2.0.0.0/mods/gup.subtitles
@@ -32,7 +32,7 @@ MY_JSON_PATH = os.path.join(MY_LOG_PATH, 'jsons')                               
 GAME_SOUND_MODES_JSON = os.path.join(MY_JSON_PATH, 'gameSoundModes.json')       # ../gameSoundModes.json
 VOICEOVER_JSON = os.path.join(MY_JSON_PATH, 'voiceover.json')                   # ../voiceover.json
 PLAY_EVENTS_JSON = os.path.join(MY_JSON_PATH, 'playEvent.json')                 # ../playEvents.json
-SETTINGS_JSON_COPY = os.path.join(MY_JSON_PATH, 'settings.json')                # ../settings.json 备份，在版本更新后使用
+SETTINGS_JSON_COPY = os.path.join(MY_JSON_PATH, 'settings.json')                # ../settings.json  替换默认settings文件
 MY_TEMPLATE_PATH = os.path.join(MY_LOG_PATH, 'templates')                       # ../autoConfigVoiceOver/templates
 INFO_JSON__ = os.path.join(MY_LOG_PATH, 'voiceover_info', 'info.json')          # 旧的文件和目录——将会被自动移除
 TEMPLATE_JSON_PATH__ = os.path.join(MY_LOG_PATH, 'template_json')
