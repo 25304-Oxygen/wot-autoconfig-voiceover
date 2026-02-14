@@ -9,6 +9,7 @@ COMMANDER_VO_LABEL = [{'label': '车长语音'}]
 CREW_VO_LABEL = [{'label': '车长语音'}, {'label': '车组语音'}]
 Full_Crew_tag = '[含车组]'
 Multi_Lingual_tag = '[多语言]'
+translate = {"default": "默认语种", "EN": "英语", "RU": "俄语", "CN": "普通话"}
 CONFIG_TEMPLATE = """{{
     // [语音包管理插件]的配置文件，如果你想要这个配置文件变回默认，请删除它
     // To generate default config, delete config file and launch a game again
@@ -143,12 +144,22 @@ PLAY_EVENTS_TEMPLATE = [{
     "id": "vo_start_battle"}, {
     "name": "战车被毁",
     "id": "vo_vehicle_destroyed"}, {
-    "name": "被点亮音效1",
+    "name": "GUI：被点亮音效1",
     "id": "lightbulb"}, {
-    "name": "火炮预警",
+    "name": "GUI：被点亮音效2",
+    "id": "lightbulb_02"}, {
+    "name": "GUI：火炮预警",
     "id": "artillery_lightbulb"}, {
-    "name": "通讯范围内首次出现敌军",
+    "name": "GUI：通讯范围内首次出现敌军",
     "id": "enemy_sighted_for_team"}, {
+    "name": "短讯：敌军被击毁",
+    "id": "expl_enemy_NPC"}, {
+    "name": "短讯：友军被击毁",
+    "id": "expl_enemy_PC"}, {
+    "name": "战斗结束：团队被歼灭",
+    "id": "end_battle_last_kill"}, {
+    "name": "战斗结束：基地被占领",
+    "id": "end_battle_capture_base"}, {
     "name": "溅射击伤",
     "id": "vo_damage_by_near_explosion_by_player"}, {
     "name": "点燃对手",
@@ -390,10 +401,9 @@ def column_b_ingame_voices(config, voice_data):
         },
         {
             'type': 'Dropdown',
-            'text': '切换语言',
+            'text': '切换语种',
             'tooltip': '{HEADER}针对部分特殊成员生效{/HEADER}'
-                       '{BODY}部分语音拥有多语言选项，RU、CN、EN分别对应俄语、汉语、英语。'
-                       '\n对于拥有多语言语音的车长，我在ta的名字后添加了对应标签。{/BODY}',
+                       '{BODY}对于拥有多语种语音的车长，我在ta的名字后添加了对应标签。{/BODY}',
             'options': voice_data['language_tag_list'],
             'button': {
                 'width': 60,
