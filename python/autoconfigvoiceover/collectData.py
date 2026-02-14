@@ -16,8 +16,6 @@ mylogger = MyLogger('collectData')
 # 创建命名元组保存读取的信息
 VoiceInfo = namedtuple('VoiceInfo', 'name, language, nickName, path, invisible')
 SubtitleInfo = namedtuple('SubtitleInfo', 'name, language, nickName, path, characters, sentences, visuals')
-# 在settings.json缺失（通常由于版本更新）后响应
-update_by_version = False
 
 
 # 由于大量使用了列表生成式创建列表，可能出现列表嵌套的情况，需要通过递归取得全部元素
@@ -105,20 +103,9 @@ def _read_from_modfile(path):
 
 
 def _get_saved_subtitles():
-    if os.path.exists(SETTINGS_JSON):
-        with open(SETTINGS_JSON, 'r') as src:
-            json_data = src.read()
-            return jsonLoad(json_data).get('subtitles', [])
-
-    global update_by_version
-    update_by_version = True
-
-    # 当版本更新或重新下载插件时，可通过副本获取历史信息
     if os.path.exists(SETTINGS_JSON_COPY):
         with open(SETTINGS_JSON_COPY, 'r') as src:
             json_data = src.read()
-            with open(SETTINGS_JSON, 'w') as dest:
-                dest.write(json_data)
             return jsonLoad(json_data).get('subtitles', [])
 
     return []
@@ -171,7 +158,6 @@ class Search(object):
         self._event_list = {}
         self._compare_message = ''
         self.notify_ingame_voices_change = False
-        self._update = False
 
     # 等待调用的方法，为各个属性赋值
     def run(self):
@@ -201,7 +187,6 @@ class Search(object):
                 self._saved_outside_voices = jsonLoad(src.read())
 
         self._saved_subtitle_voices = _get_saved_subtitles()
-        self._update = update_by_version
 
         if os.path.exists(GAME_SOUND_MODES_JSON):
             try:
@@ -343,10 +328,6 @@ class Search(object):
     @property
     def message(self):
         return self._compare_message
-
-    @property
-    def update(self):
-        return self._update
 
     def remove_outside_voice(self, voice):
         self._outside_voices.remove(voice)

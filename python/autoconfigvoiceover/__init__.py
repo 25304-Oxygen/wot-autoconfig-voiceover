@@ -3,7 +3,7 @@
     软件包的构造模块，限制了导入变量。
     初始化常量、目录、文件，未初始化的文件：gameSoundModes.json, playEvent.json, settings.json及其副本
 """
-__all__ = ['myModsVersion', 'isApiPresent', 'where_am_i', 'MyLogger', 'Notifier', 'override', 'g_search', 'g_update', 'g_template']
+__all__ = ['SETTINGS_JSON_COPY', 'myModsVersion', 'isApiPresent', 'where_am_i', 'MyLogger', 'Notifier', 'override', 'g_search', 'g_update', 'g_template']
 
 import shutil
 from myLogger import *
@@ -15,7 +15,7 @@ from tools import *
 from notifier import Notifier
 
 mylogger = MyLogger('__init__')
-PATHS = [RES_GUP_MODS_PATH, MY_PNG_PATH, MY_JSON_PATH, MY_TEMPLATE_PATH]
+PATHS = [MY_PNG_PATH, MY_JSON_PATH, MY_TEMPLATE_PATH]
 myModsVersion = MY_MODS_VERSION
 isApiPresent = constants.IS_API_PRESENT
 where_am_i = None
@@ -72,9 +72,15 @@ def support_old_version():
         with open(CONFIG_JSON, 'r') as src:
             config = jsonLoad(src.read())
         if config['__version__'] < MY_MODS_CONFIG_VERSION:
-            data_migration(config)
-        else:
-            constants.SHOW_DETAILS = config['show_details']
+            if config['__version__'] < 2:
+                data_migration(config)
+            with open(PLAY_EVENTS_JSON, 'w') as src:
+                json_str = jsonDump(PLAY_EVENTS_TEMPLATE)
+                src.write(json_str)
+            config['__version__'] = MY_MODS_CONFIG_VERSION
+            save_config(config)
+
+        constants.SHOW_DETAILS = config['show_details']
     except (TypeError, ValueError):
         save_config(DEFAULT_CONFIG)
         mylogger.warn('配置信息读取出错，已生成默认的配置文件。')
