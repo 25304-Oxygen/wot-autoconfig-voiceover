@@ -2,6 +2,8 @@
 """
     此模块负责实现游戏内语音包信息获取、语音包添加与切换等功能，并将信息保存进文件。
 """
+import os.path
+
 import constants
 import ResMgr
 import SoundGroups
@@ -9,7 +11,7 @@ from helpers.i18n import makeString as _ms
 from constants import (MAIN_SOUND_MODES_XML, SPECIAL_VOICES_XML, TANKMEN_XML_ROOT_PATH, SETTINGS_JSON,
                        SETTINGS_JSON_COPY, GAME_SOUND_MODES_JSON, VOICEOVER_JSON, DEFAULT_PNG, GUP_SETTINGS_FILE)
 from collectData import g_search
-from template import Full_Crew_tag, Multi_Lingual_tag
+from template import Full_Crew_tag, Multi_Lingual_tag, translate
 from tools import jsonDump
 from myLogger import MyLogger
 
@@ -27,12 +29,12 @@ def _get_commander_data(section):
     nickname = commander_namelist.get(tag, tag)
     # sound_mode: 该属性下的字符串值，该属性可能还包含<RU>、<CN>等代表不同语言的属性，其值也是声音模式名
     sound_mode = section.readString('languageMode')
-    normal = {default_sound_name: sound_mode}
+    normal = {translate.get('default', default_sound_name): sound_mode}
     other_language = section['languageMode'].keys()
     if other_language:
         nickname += Multi_Lingual_tag
         normal.update(
-            {nation: section['languageMode'].readString(nation) for nation in other_language}
+            {translate.get(nation, nation): section['languageMode'].readString(nation) for nation in other_language}
         )
     if section.has_key('specialModes'):
         nickname += Full_Crew_tag
@@ -128,13 +130,13 @@ def _save_subtitle_vices_info():
         subtitles_list.append(sbt_data)
     json_data = jsonDump({"subtitles": subtitles_list})
 
-    if ResMgr.isFile(GUP_SETTINGS_FILE):
-        src = ResMgr.openSection(GUP_SETTINGS_FILE)
-        src.asString = json_data
-        src.save()
-    else:
-        with open(SETTINGS_JSON, 'w') as f:
-            f.write(json_data)
+    # if ResMgr.isFile(GUP_SETTINGS_FILE):
+    #     src = ResMgr.openSection(GUP_SETTINGS_FILE)
+    #     src.asString = json_data
+    #     src.save()
+    # else:
+    #     with open(SETTINGS_JSON, 'w') as f:
+    #         f.write(json_data)
     with open(SETTINGS_JSON_COPY, 'w') as f:
         f.write(json_data)
 
@@ -219,11 +221,7 @@ class UpdateManager(object):
         g_search._ingame_voices = self._new_ingame_voices_list()
         self.__extra_dict = _load_sound_outside()
         self.__origin_sound_modes_dict = SoundGroups.g_instance.soundModes._SoundModes__modes.copy()
-        _save_subtitle_vices_info()
         g_search.compare()
-        _save_ingame_voices_info(g_search._ingame_voices)
-        _save_outside_voices_info(g_search.outside_voices)
-        mylogger.info('语音包信息已保存。')
 
     def get_voice_data_from_iv(self, mode_name):
         voice_data = {}
@@ -274,6 +272,11 @@ class UpdateManager(object):
             if vid in key_list:
                 SoundGroups.g_instance.soundModes._SoundModes__modes[vid].description = i10n
         mylogger.debug('已修改内置语音显示名称。')
+
+    def save_files(self):
+        _save_subtitle_vices_info()
+        _save_ingame_voices_info(g_search._ingame_voices)
+        _save_outside_voices_info(g_search.outside_voices)
 
 
 g_update = UpdateManager()

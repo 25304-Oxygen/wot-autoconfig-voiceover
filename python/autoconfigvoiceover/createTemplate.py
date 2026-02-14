@@ -539,16 +539,6 @@ class DrawUi(object):
 
         g_update.reset_display_name(clone_iv_list)
 
-        # 在版本更新后，初始化字幕插件以获取字幕效果支持。此处两个json的绝对路径均可
-        if g_search.update:
-            try:
-                from gui.mods import mod_gup_subtitles as gup_mod
-                gup_mod.SETTINGS_FILE = constants.SETTINGS_JSON_COPY
-                gup_mod.init()
-                mylogger.debug('字幕信息更新完毕。')
-            except ImportError:
-                mylogger.warn('无法导入字幕插件！字幕不可用！')
-
 
 g_template = DrawUi()
 

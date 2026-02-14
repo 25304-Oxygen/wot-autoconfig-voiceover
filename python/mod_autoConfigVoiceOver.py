@@ -7,7 +7,6 @@
 # Characters "语音包" means "voiceover soundbank(s)" or Voice pack(s)
 from autoconfigvoiceover import *
 from gui import SystemMessages
-from Account import PlayerAccount
 from gui.SystemMessages import SM_TYPE
 mylogger = MyLogger('autoConfigVoiceOver')
 text = '插件初始化失败'
@@ -39,14 +38,24 @@ def init():
     mylogger.info('初始化已完成。插件运行状态：' + text)
 
 
-def fini():
-    mylogger.info('程序正常退出。')
-
-
-@override(PlayerAccount, 'onBecomePlayer')
-def new_onBecomePlayer(original_func, self):
-    original_func(self)
+# 在你成功进入游戏后被调用
+def onAccountBecomePlayer():
     global msg_sent
     if not msg_sent:
-        SystemMessages.pushMessage(text=text, type=text_type, messageData={'header': header})
         msg_sent = True
+        SystemMessages.pushMessage(text=text, type=text_type, messageData={'header': header})
+        if not isApiPresent:
+            return
+        g_update.save_files()
+        mylogger.info('语音包信息已保存。')
+        try:
+            from gui.mods import mod_gup_subtitles as gup_mod
+            gup_mod.SETTINGS_FILE = SETTINGS_JSON_COPY
+            gup_mod.init()
+            mylogger.debug('字幕信息更新完毕。')
+        except ImportError:
+            mylogger.warn('无法导入字幕插件！字幕不可用！')
+
+
+def fini():
+    mylogger.info('程序正常退出。')
