@@ -208,7 +208,7 @@ Mod文件名按照以下方案创建：
 ```
 
 在此文件中指定的Mod不会被视作冲突项。游戏在加载这些Mod时将不进行同名文件检查。
-*排列在文件末尾的Mod拥有最高加载优先级。*
+*发生冲突时，靠后排列的Mod拥有更高加载优先级。*
 
 #### 2.使用`meta.xml`中的`<id>`字段和`<version>`字段
 
@@ -237,7 +237,7 @@ Mod版本顺序的排序规则是基于ASCII码表的字符逐位比对，其行
 在一个Mod内部，此文件应位于以下路径：
 
 ```chatinput
-<author_id>.<mod_id>_<version>.wotmod/res/scripts/client/gui/mods/mod_<anything>.pyc
+<author_id>.<mod_id>_<version>.wotmod/res/scripts/client/gui/mods/mod_<任意名称>.pyc
 ```
 
 ## 7、模组文件的推荐路径
@@ -281,7 +281,7 @@ Mod版本顺序的排序规则是基于ASCII码表的字符逐位比对，其行
 
 ### 7.4 其他模组文件
 
-如需存储需要在游戏客户端中访问的内容，请使用以下路径：
+如需存储需要在游戏客户端中访问的内容，建议使用以下路径：
 
 ```chatinput
 <package_name>.wotmod/res/mods/<author_id>.<mod_id>/
