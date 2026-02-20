@@ -36,6 +36,13 @@ def init():
     text = '你现在可以管理和启用特定语音包了！<br>打开下方插件管理器进入管理界面<br>插件当前版本：' + myModsVersion
     text_type = SM_TYPE.MessageHeader
     mylogger.info('初始化已完成。插件运行状态：' + text)
+    try:
+        from gui.mods import mod_gup_subtitles as gup_mod
+        gup_mod.SETTINGS_FILE = SETTINGS_JSON_COPY
+        gup_mod.init()
+        mylogger.debug('字幕信息更新完毕。')
+    except ImportError:
+        mylogger.warn('无法导入字幕插件！字幕不可用！')
 
 
 # 在你成功进入游戏后被调用
@@ -48,13 +55,6 @@ def onAccountBecomePlayer():
             return
         g_update.save_files()
         mylogger.info('语音包信息已保存。')
-        try:
-            from gui.mods import mod_gup_subtitles as gup_mod
-            gup_mod.SETTINGS_FILE = SETTINGS_JSON_COPY
-            gup_mod.init()
-            mylogger.debug('字幕信息更新完毕。')
-        except ImportError:
-            mylogger.warn('无法导入字幕插件！字幕不可用！')
 
 
 def fini():
