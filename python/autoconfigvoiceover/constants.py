@@ -6,7 +6,7 @@ import os.path
 import ResMgr
 MY_MODS_ID = 'autoConfigVoiceOver'
 MY_MODS_LINKAGE = 'auto_config_voiceover'
-MY_MODS_VERSION = '0.0.7b'
+MY_MODS_VERSION = '0.0.7c'
 MY_MODS_CONFIG_VERSION = 4
 VOICE_SELECTED_EVENT = 'vo_selected'                                            # 选中语音并应用后，将播放的一个 Wwise 事件
 TANKMEN_XML_ROOT_PATH = 'scripts/item_defs/tankmen/'                            # ResMgr 中的虚拟路径

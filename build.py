@@ -9,7 +9,7 @@ from xml.dom import minidom
 
 SOURCE_DIR = "python"
 BUILD_DIR = "build"
-VERSIONS = {'acv': '0.0.7b', 'rmp': '0.0.2'}
+VERSIONS = {'acv': '0.0.7c', 'rmp': '0.0.2'}
 OPTIONAL_XML_PATH = 'res/mods/soundRemapping/'
 
 
