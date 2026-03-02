@@ -155,7 +155,7 @@ PLAY_EVENTS_TEMPLATE = [{
     "name": "短讯：敌军被击毁",
     "id": "expl_enemy_NPC"}, {
     "name": "短讯：友军被击毁",
-    "id": "expl_enemy_PC"}, {
+    "id": "expl_ally_NPC"}, {
     "name": "战斗结束：团队被歼灭",
     "id": "end_battle_last_kill"}, {
     "name": "战斗结束：基地被占领",
