@@ -3,6 +3,7 @@
     此模块负责实现游戏内语音包信息获取、语音包添加与切换等功能，并将信息保存进文件。
 """
 import os.path
+import re
 
 import constants
 import ResMgr
@@ -38,11 +39,11 @@ def _get_commander_data(section):
         )
     if section.has_key('specialModes'):
         nickname += Full_Crew_tag
-        full_crew = {default_sound_name: section['specialModes'].readString('isFullCrew')}
+        full_crew = {translate.get('default', default_sound_name): section['specialModes'].readString('isFullCrew')}
         other_language = section['specialModes']['isFullCrew'].keys()
         if other_language:
             full_crew.update(
-                {nation: section['specialModes']['isFullCrew'].readString(nation)
+                {translate.get(nation, nation): section['specialModes']['isFullCrew'].readString(nation)
                  for nation in other_language}
             )
         return {
@@ -68,10 +69,16 @@ def _get_all_namelist():
         for item in root_sec['premiumGroups'].values():
             if not item.has_key('tags'):
                 continue
+
             tags = item.readString('tags')
             last_space_index = tags.rfind(' ')
-            name = tags[last_space_index + 1:]
-            # if name.endswith('SpecialVoice'): <- 这样会遗漏很多名字
+            pattern = r'\b(\w*SpecialVoice\w*)\b'
+            match = re.search(pattern, tags)
+            if match:
+                name = match.group(1)
+            else:
+                name = tags[last_space_index + 1:]
+
             first_names = item['firstNames']
             last_names = item['lastNames']
             key = first_names.keys()[0]
@@ -250,9 +257,10 @@ class UpdateManager(object):
         if voice in namelist_by_special:
             index = namelist_by_special.index(voice)
             data = self._ingame_sound_modes_desc[index]
+            default_lang = translate.get('default', default_sound_name)
             if is_full_crew:
-                return data['full_crew'][multi_lingual]
-            return data['normal'][multi_lingual]
+                return data['full_crew'].get(multi_lingual, data['full_crew'].get(default_lang))
+            return data['normal'].get(multi_lingual, data['normal'].get(default_lang))
 
     def get_default_tag(self):
         return {'label': self._nation_voices[0]['normal'].keys()[0]}
