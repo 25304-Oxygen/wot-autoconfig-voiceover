@@ -1,0 +1,254 @@
+[
+    {
+        "text": "战斗开始",
+        "event": "vo_start_battle"
+    }, 
+    {
+        "text": "战车被毁",
+        "event": "vo_vehicle_destroyed"
+    }, 
+    {
+        "text": "GUI：被点亮音效1",
+        "event": "lightbulb"
+    }, 
+    {
+        "text": "GUI：被点亮音效2",
+        "event": "lightbulb_02"
+    }, 
+    {
+        "text": "GUI：火炮预警",
+        "event": "artillery_lightbulb"
+    }, 
+    {
+        "text": "GUI：通讯范围内首次出现敌军",
+        "event": "enemy_sighted_for_team"
+    }, 
+    {
+        "text": "溅射击伤",
+        "event": "vo_damage_by_near_explosion_by_player"
+    }, 
+    {
+        "text": "点燃对手",
+        "event": "vo_enemy_fire_started_by_player"
+    }, 
+    {
+        "text": "重创对手",
+        "event": "vo_enemy_hp_damaged_by_projectile_and_chassis_damaged_by_player"
+    }, 
+    {
+        "text": "击穿目标",
+        "event": "vo_enemy_hp_damaged_by_projectile_by_player"
+    }, 
+    {
+        "text": "击毁敌方坦克",
+        "event": "vo_enemy_killed_by_player"
+    }, 
+    {
+        "text": "锁定目标",
+        "event": "vo_target_captured"
+    }, 
+    {
+        "text": "目标丢失",
+        "event": "vo_target_lost"
+    }, 
+    {
+        "text": "解除锁定",
+        "event": "vo_target_unlocked"
+    }, 
+    {
+        "text": "击毁盟友",
+        "event": "vo_ally_killed_by_player"
+    }, 
+    {
+        "text": "未击穿装甲",
+        "event": "vo_armor_not_pierced_by_player"
+    }, 
+    {
+        "text": "跳弹",
+        "event": "vo_armor_ricochet_by_player"
+    }, 
+    {
+        "text": "致命一击（未造成HP伤害）",
+        "event": "vo_enemy_no_hp_damage_at_attempt_and_chassis_damaged_by_player"
+    }, 
+    {
+        "text": "车长受重伤",
+        "event": "vo_commander_killed"
+    }, 
+    {
+        "text": "驾驶员受重伤",
+        "event": "vo_driver_killed"
+    }, 
+    {
+        "text": "炮手受重伤",
+        "event": "vo_gunner_killed"
+    }, 
+    {
+        "text": "装填手受重伤",
+        "event": "vo_loader_killed"
+    }, 
+    {
+        "text": "通讯兵受重伤",
+        "event": "vo_radioman_killed"
+    }, 
+    {
+        "text": "车组全员阵亡",
+        "event": "vo_crew_deactivated"
+    }, 
+    {
+        "text": "战车起火",
+        "event": "vo_fire_started"
+    }, 
+    {
+        "text": "火被扑灭了",
+        "event": "vo_fire_stopped"
+    }, 
+    {
+        "text": "弹药架受损",
+        "event": "vo_ammo_bay_damaged"
+    }, 
+    {
+        "text": "油箱被击中",
+        "event": "vo_fuel_tank_damaged"
+    }, 
+    {
+        "text": "电台受损",
+        "event": "vo_radio_damaged"
+    },  
+    {
+        "text": "履带受损", 
+        "event": "vo_track_damaged"
+    }, 
+    {
+        "text": "履带被击毁", 
+        "event": "vo_track_destroyed"
+    }, 
+    {
+        "text": "履带完成修复", 
+        "event": "vo_track_functional"
+    }, 
+    {
+        "text": "履带完成修复可以移动", 
+        "event": "vo_track_functional_can_move"
+    }, 
+    {
+        "text": "发动机受损",
+        "event": "vo_engine_damaged"
+    }, 
+    {
+        "text": "发动机被击毁",
+        "event": "vo_engine_destroyed"
+    }, 
+    {
+        "text": "发动机完成修复",
+        "event": "vo_engine_functional"
+    }, 
+    {
+        "text": "主炮受损",
+        "event": "vo_gun_damaged"
+    }, 
+    {
+        "text": "主炮被击毁",
+        "event": "vo_gun_destroyed"
+    }, 
+    {
+        "text": "主炮完成修复",
+        "event": "vo_gun_functional"
+    }, 
+    {
+        "text": "炮塔座圈受损",
+        "event": "vo_turret_rotator_damaged"
+    }, 
+    {
+        "text": "炮塔无法转动",
+        "event": "vo_turret_rotator_destroyed"
+    }, 
+    {
+        "text": "炮塔座圈修复",
+        "event": "vo_turret_rotator_functional"
+    }, 
+    {
+        "text": "观察孔受损",
+        "event": "vo_turret_rotator_functional"
+    }, 
+    {
+        "text": "观察孔严重受损",
+        "event": "vo_turret_rotator_functional"
+    }, 
+    {
+        "text": "观瞄设备被摧毁",
+        "event": "vo_turret_rotator_functional"
+    }, 
+    {
+        "text": "观察孔清理完毕",
+        "event": "vo_turret_rotator_functional"
+    }, 
+    {
+        "text": "战斗中组队：发送协助请求",
+        "event": "vo_dp_assistance_been_requested"
+    }, 
+    {
+        "text": "战斗中组队：创建小队",
+        "event": "vo_dp_platoon_created"
+    }, 
+    {
+        "text": "战斗中组队：加入小队",
+        "event": "vo_dp_platoon_joined"
+    }, 
+    {
+        "text": "战斗中组队：新玩家入队",
+        "event": "vo_dp_player_joined_platoon"
+    }, 
+    {
+        "text": "战斗中组队：解散小队",
+        "event": "vo_dp_platoon_dismissed"
+    }, 
+    {
+        "text": "战斗中组队：主动离队",
+        "event": "vo_dp_left_platoon"
+    }, 
+    {
+        "text": "战斗中组队：被踢出小队",
+        "event": "vo_dp_been_excluded_platoon"
+    }, 
+    {
+        "text": "【由你】战斗中通讯：收到",
+        "event": "ibc_vo_pc_reply_affirmative"
+    }, 
+    {
+        "text": "【由你】战斗中通讯：发出支援",
+        "event": "ibc_vo_pc_reply_sos"
+    }, 
+    {
+        "text": "【由你】战斗中通讯：谢谢",
+        "event": "ibc_vo_pc_reply_thank_you"
+    }, 
+    {
+        "text": "【由你】战斗中通讯：请求支援",
+        "event": "ibc_vo_pc_request_sos"
+    }, 
+    {
+        "text": "【由你】战斗中通讯：请求撤退",
+        "event": "ibc_vo_pc_request_retreat"
+    }, 
+    {
+        "text": "【队友】战斗中通讯：收到",
+        "event": "ibc_vo_npc_reply_affirmative"
+    }, 
+    {
+        "text": "【队友】战斗中通讯：发出支援",
+        "event": "ibc_vo_npc_reply_sos"
+    }, 
+    {
+        "text": "【队友】战斗中通讯：谢谢",
+        "event": "ibc_vo_npc_reply_thank_you"
+    }, 
+    {
+        "text": "【队友】战斗中通讯：请求支援",
+        "event": "ibc_vo_npc_request_sos"
+    }, 
+    {
+        "text": "【队友】战斗中通讯：请求撤退",
+        "event": "ibc_vo_npc_request_retreat"
+    }
+]

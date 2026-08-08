@@ -1,0 +1,116 @@
+[
+    {
+        // 主题名称
+        "name":   "[内置主题] 浅色", 
+        
+        // 颜色深：主菜单圆形图标、弹窗背景的颜色
+        "surface0":      "#E2E8F0", 
+        
+        // 颜色中：展开页面板背景、输入框、复选框的颜色
+        "surface1":      "#F1F5F9", 
+        
+        // 颜色浅：滚动条轨道、步进器轨道的颜色
+        "surface2":      "#F8FAFC", 
+        
+        // 特殊项：菜单主面板、下拉列表行的颜色
+        "surface3":      "#FFFFFF", 
+        
+        // 主色调：左侧圆形导航按钮、按钮正常态、复选框选中态的颜色
+        "accent":        "#2563EB", 
+        
+        // 悬停：按钮悬停、步进器拇指
+        "accentHover":   "#3B82F6", 
+        
+        // 按下：按钮按下的颜色
+        "accentPress":   "#1D4ED8", 
+        
+        // 各组件描边颜色
+        "stroke":        "#CBD5E1", 
+        
+        // 正文、标签字体颜色
+        "textPrimary":   "#0F172A", 
+        
+        // 次要文本、禁用状态描述文本字体颜色
+        "textSecondary": "#64748B", 
+        
+        // 菜单大标题：语音包名称文本框字体颜色
+        "titleText":     "#D4D4D4", 
+        
+        // 滚动条拇指颜色
+        "sbThumb":       "#94A3B8", 
+        
+        // 滚动条 ▲▼ 按钮背景的颜色
+        "sbBtn":         "#F1F5F9", 
+        
+        // 滚动条 ▲▼ 箭头的颜色
+        "sbBtnArrow":    "#64748B"
+    },
+    {
+        "name":   "[内置主题] 活力橙 - 浅色", 
+        "surface0":      "#F5EBE0", 
+        "surface1":      "#FAF1E6", 
+        "surface2":      "#FDF8F3", 
+        "surface3":      "#FFFFFF", 
+        "accent":        "#F97316", 
+        "accentHover":   "#FB923C", 
+        "accentPress":   "#EA580C", 
+        "stroke":        "#E7D5C9", 
+        "textPrimary":   "#2D1B12", 
+        "textSecondary": "#8B6B5A", 
+        "titleText":     "#D4D4D4", 
+        "sbThumb":       "#D4A88C", 
+        "sbBtn":         "#FAF1E6", 
+        "sbBtnArrow":    "#8B6B5A"
+    },
+    {
+        "name":   "[内置主题] 活力橙 - 深色", 
+        "surface0":      "0x1C1712", 
+        "surface1":      "0x2C241E", 
+        "surface2":      "0x3C322A", 
+        "surface3":      "0x4C4036", 
+        "accent":        "0xF97316", 
+        "accentHover":   "0xFB923C", 
+        "accentPress":   "0xEA580C", 
+        "stroke":        "0x5A4A3E", 
+        "textPrimary":   "0xF5E6D3", 
+        "textSecondary": "0xB0957A", 
+        "titleText":     "0xFFFFFF", 
+        "sbThumb":       "0xB0957A", 
+        "sbBtn":         "0x2C241E", 
+        "sbBtnArrow":    "0xF5E6D3"
+    }, 
+    {
+        "name":   "[内置主题] 玫瑰粉 - 浅色",
+        "surface0":      "#FCE8F0", 
+        "surface1":      "#FDF2F7", 
+        "surface2":      "#FFF8FA", 
+        "surface3":      "#FFFFFF", 
+        "accent":        "#EC4899", 
+        "accentHover":   "#F472B6", 
+        "accentPress":   "#DB2777", 
+        "stroke":        "#FBCFE8", 
+        "textPrimary":   "#29131C", 
+        "textSecondary": "#9D6D84", 
+        "titleText":     "#D4D4D4", 
+        "sbThumb":       "#E9A8C2", 
+        "sbBtn":         "#FDF2F7", 
+        "sbBtnArrow":    "#9D6D84"
+    }, 
+    {
+        "name":    "[内置主题] 玫瑰粉 - 深色", 
+        "surface0":      "0x1C1118", 
+        "surface1":      "0x2C1A24", 
+        "surface2":      "0x3C2530", 
+        "surface3":      "0x4C303C", 
+        "accent":        "0xEC4899", 
+        "accentHover":   "0xF472B6", 
+        "accentPress":   "0xDB2777", 
+        "stroke":        "0x5A3A48", 
+        "textPrimary":   "0xF5E0E8", 
+        "textSecondary": "0xB08090", 
+        "titleText":     "0xFFFFFF", 
+        "sbThumb":       "0xB08090", 
+        "sbBtn":         "0x2C1A24", 
+        "sbBtnArrow":    "0xF5E0E8"
+    }
+]

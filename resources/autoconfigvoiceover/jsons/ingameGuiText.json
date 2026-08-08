@@ -1,0 +1,131 @@
+{
+    "placeholder": {
+        "%(target)s": "目标",
+        "%(reloadTime)d": "114514",
+        "%(floatArg1)d": "114514",
+        "%(int32Arg1)s": "∞",
+        "%(gridId)s": "A1"
+    },
+    "keyMap": [
+        {
+            "text": "快捷消息：收到",
+            "key": "#ingame_gui:chat_shortcuts/affirmative"
+        },
+        {
+            "text": "快捷消息：xxx遵命",
+            "key": "#ingame_gui:chat_shortcuts/positive"
+        },
+        {
+            "text": "快捷消息：拒绝",
+            "key": "#ingame_gui:chat_shortcuts/negative"
+        },
+        {
+            "text": "快捷消息：谢谢你",
+            "key": "#ingame_gui:chat_shortcuts/thanks"
+        },
+        {
+            "text": "快捷消息：xxx我将前来支援",
+            "key": "#ingame_gui:chat_shortcuts/supporting_ally"
+        },
+        {
+            "text": "快捷消息：请求支援",
+            "key": "#ingame_gui:chat_shortcuts/help_me"
+        },
+        {
+            "text": "快捷消息：xxx请求支援",
+            "key": "#ingame_gui:chat_shortcuts/help_me_ex"
+        },
+        {
+            "text": "快捷消息：xxx撤离那里",
+            "key": "#ingame_gui:chat_shortcuts/turn_back"
+        },
+        {
+            "text": "一般项：占领基地",
+            "key": "#ingame_gui:chat_shortcuts/attention_to_base_atk"
+        },
+        {
+            "text": "一般项：我将占领基地",
+            "key": "#ingame_gui:chat_shortcuts/attacking_base"
+        },
+        {
+            "text": "一般项：防守基地",
+            "key": "#ingame_gui:chat_shortcuts/attention_to_base_def"
+        },
+        {
+            "text": "一般项：我将防守基地",
+            "key": "#ingame_gui:chat_shortcuts/defending_base"
+        },
+        {
+            "text": "一般项：注意xxx",
+            "key": "#ingame_gui:chat_shortcuts/attention_to_position_gridInfo"
+        },
+        {
+            "text": "一般项：移动至xxx",
+            "key": "#ingame_gui:chat_shortcuts/going_there_gridInfo"
+        },
+        {
+            "text": "通用：准备开火",
+            "key": "#ingame_gui:chat_shortcuts/reloading_ready"
+        },
+        {
+            "text": "通用：准备开火，弹夹xxx发",
+            "key": "#ingame_gui:chat_shortcuts/reloading_ready_cassette"
+        },
+        {
+            "text": "通用：开火还需xxx秒，弹夹xxx发",
+            "key": "#ingame_gui:chat_shortcuts/reloading_cassette"
+        },
+        {
+            "text": "通用：装填还需xxx秒",
+            "key": "#ingame_gui:chat_shortcuts/reloading_gun"
+        },
+        {
+            "text": "通用：向xxx开火",
+            "key": "#ingame_gui:chat_shortcuts/attack_enemy"
+        },
+        {
+            "text": "通用：正在攻击xxx",
+            "key": "#ingame_gui:chat_shortcuts/attacking_enemy"
+        },
+        {
+            "text": "通用：弹药不足",
+            "key": "#ingame_gui:chat_shortcuts/reloading_unavailable"
+        },
+        {
+            "text": "机炮：主炮过热xxx秒内不能射击",
+            "key": "#ingame_gui:chat_shortcuts/overheated_gun"
+        },
+        {
+            "text": "火炮：准备攻击xxx",
+            "key": "#ingame_gui:chat_shortcuts/attack_enemy_with_SPG"
+        },
+        {
+            "text": "火炮：攻击xxx，装填还需xxx秒",
+            "key": "#ingame_gui:chat_shortcuts/attack_enemy_with_SPG_reloading"
+        },
+        {
+            "text": "火炮：弹药不足，请求攻击xxx",
+            "key": "#ingame_gui:chat_shortcuts/attack_enemy_with_SPG_empty"
+        },
+        {
+            "text": "火炮：瞄准并准备开火",
+            "key": "#ingame_gui:chat_shortcuts/spg_aim_area"
+        },
+        {
+            "text": "火炮：瞄准但装填还需xxx秒",
+            "key": "#ingame_gui:chat_shortcuts/spg_aim_area_reloading"
+        },
+        {
+            "text": "火炮：瞄准位置xxx但没弹药了",
+            "key": "#ingame_gui:chat_shortcuts/spg_aim_area_empty_gridInfo"
+        },
+        {
+            "text": "火炮：瞄准位置xxx准备开火",
+            "key": "#ingame_gui:chat_shortcuts/spg_aim_area_gridInfo"
+        },
+        {
+            "text": "火炮：瞄准位置xxx装填还需xxx秒",
+            "key": "#ingame_gui:chat_shortcuts/spg_aim_area_reloading_gridInfo"
+        }
+    ]
+}

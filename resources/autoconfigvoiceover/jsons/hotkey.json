@@ -1,0 +1,42 @@
+[
+    {
+        "hotkey": "F1",
+        "keycode": "KEY_F1"
+    },
+    {
+        "hotkey": "F2",
+        "keycode": "KEY_F2"
+    },
+    {
+        "hotkey": "F3",
+        "keycode": "KEY_F3"
+    },
+    {
+        "hotkey": "F4",
+        "keycode": "KEY_F4"
+    },
+    {
+        "hotkey": "F5",
+        "keycode": "KEY_F5"
+    },
+    {
+        "hotkey": "F6",
+        "keycode": "KEY_F6"
+    },
+    {
+        "hotkey": "F7",
+        "keycode": "KEY_F7"
+    },
+    {
+        "hotkey": "F8",
+        "keycode": "KEY_F8"
+    },
+    {
+        "hotkey": "F9",
+        "keycode": "KEY_F9"
+    },
+    {
+        "hotkey": "F10",
+        "keycode": "KEY_F10"
+    }
+]
