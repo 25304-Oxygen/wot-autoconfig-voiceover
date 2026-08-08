@@ -1,0 +1,61 @@
+#
+<p align="center"><font size="18"><b>Plugin Introduction</b></font></p>
+<br>
+<p align="left">
+<font size="15">This is a mod that makes voice packs compatible with each other. Supported features:</font>
+</p>
+<p align="left">
+<font size="15"><b>．Voice Enhancement: </b></font>
+Expands the scope and triggers of voice modification. By attaching a file in a specified format to a voice pack, you can replace any sound driven by a WWISE Event, and also play specified sounds when certain sounds play or commands are issued.<br>
+<font size="15"><b>．Special Voice Override: </b></font>
+When you enter a battle with a commander that carries a voice pack, the special voice is forced back to the voice pack currently selected in this plugin. For normal commanders, <b>no forced change is applied</b> — you can still switch voices anytime from the game settings menu without opening the plugin panel. That said, switching through the plugin is still recommended.<br>
+<font size="15"><b>．Subtitle Rendering: </b></font>
+Implements a feature similar to the official Girls und Panzer subtitle plugin. By attaching a file in a specified format to a voice pack, you can achieve a wide variety of subtitle visual effects, with maximum DIY support and an optimized subtitle queue.<br>
+<font size="15"><b>．Other Features: </b></font>
+<font class="secondary" size="14">
+Implements a feature similar to spotted shout, letting you edit your shout text, and also lets you replace the in-game quick chat messages. The edited quick chat text is only visible to you. These features are unrelated to sound modification.</font>
+</p><br>
+<p align="center"><font size="18"><b>Files and Explanation</b></font></p>
+<br>
+<p align="left">
+The plugin stores its data on disk at runtime. Delete a file to restore its default. Storage directory: {0}
+</p>
+<p align="left">
+<font size="15"><b>．bgimgs folder: </b></font>
+Background images used by the plugin (menu.png, panel.png, page.png — 260x260, 620x260, 680x500 pixels respectively). You can replace them.<br>
+<font size="15"><b>．icons folder: </b></font>
+Left navigation icons (help.png, settings.png, voice.png — 84x84 pixels; 64x64 is recommended). You can replace them.<br>
+<font size="15"><b>．jsons folder: </b></font>
+gameSoundModes.json (built-in voice pack list — edit names and volumes, reorder), hotkey.json (hotkey codes for selecting and setting the hotkey), ingameGuiText.json (quick chat message codes for in-game text replacement), personal_settings.json (spotted shout and quick message replacement), playEvent.json (sound playlist — plays sounds by event name), theme.json (UI color scheme table — editable), voiceover.json (third-party voice pack list — volume editable)<br>
+<font size="15"><b>．l10n folder: </b></font>
+UI translations. Editable.<br>
+<font size="15"><b>．subtitles folder: </b></font>
+Saves the subtitle component offsets of each subtitle voice pack. Simple and standard modes save offsets independently.<br>
+<font size="15"><b>．config.json: </b></font>
+<font class="secondary" size="14">Configuration file.</font><br>
+<font size="15"><b>．script.log: </b></font>
+<font class="secondary" size="14">Runtime log. The log output level can be changed in settings.</font>
+</p><br>
+<p align="center"><font size="18"><b>FAQ</b></font></p>
+<br>
+<p align="left">
+<font size="15"><b>  Q1: I cannot find the voice pack I downloaded?</b></font><br>
+<font class="secondary" size="14">  A: Voice packs must be in .wotmod format and organized in the specified way.</font><br>
+<font size="15"><b>  Q2: I installed a .wotmod voice pack but it is not found?</b></font><br>
+<font class="secondary" size="14">  A: This is usually caused by an incorrect file structure. Go to the config folder, open script.log and check the error.</font><br>
+<font size="15"><b>  Q3: I want to package a voice pack myself. How?</b></font><br>
+<font class="secondary" size="14">  A: You can find a text tutorial in the GitHub repository. </font><br>
+<font size="15"><b>  Q4: I want to learn how to make a subtitle voice pack?</b></font><br>
+<font class="secondary" size="14">  A: The tutorials will be posted on both Bilibili AND GitHub repository. Wait with patience.</font><br>
+</p><br>
+<p align="center"><font size="18"><b>Issues and Bug Reports</b></font></p>
+<br>
+<p align="left">
+．Create a GitHub issue: <a href='event:github'><font color="#4A90D9"><u>GitHub repository</u></font></a><br>
+．Send a private message or leave a comment on Bilibili: <a href='event:bilibili_2'><font color="#4A90D9"><u>@下一个车站等你</u></font></a>
+</p>
+<br>
+<p align="left"><font class="secondary">
+Plugin version: v{1}<br>Credits: claude code, deepseek-v4
+</font></p>
+<p align="center"><img src="mods/autoconfigvoiceover/icons/icon.png"/></p>

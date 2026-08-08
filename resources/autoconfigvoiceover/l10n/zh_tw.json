@@ -1,0 +1,187 @@
+// 繁體中文词典 (zh_tw)
+//
+// __meta__.displayName = 界面語言下拉的顯示名（不隨界面語言變化）；
+// 新增語言只需新建文件並在頭部寫 __meta__.displayName，無需改任何代碼。
+{
+    "__meta__": {
+        "displayName": "繁體中文"
+    },
+
+    //   通用
+    "ui_lang/auto": "跟隨客戶端",
+
+    //   半折疊面板
+    "semi_panel/btn_detail": "詳情",
+    "semi_panel/btn_personal": "個人化",
+    "semi_panel/btn_subtitle": "字幕",
+    "semi_panel/toggle_on": "啟用中",
+    "semi_panel/toggle_off": "停用中",
+
+    //  設定頁
+    "settings/title": "設定",
+    "settings/dropdown_loading": "載入中...",
+
+    //   GroupBox1 系別語音
+    "settings/nation_voice_title": "系別語音設定",
+    "settings/radio_male": "男聲",
+    "settings/radio_female": "女聲",
+
+    //   GroupBox2 通知
+    "settings/notify_title": "通知設定",
+    "settings/notify_label": "語音包統計資訊推播",
+    "settings/radio_notify_none": "不推播",
+    "settings/radio_notify_count": "僅計數",
+    "settings/radio_notify_detail": "詳細",
+    "settings/cb_ui_sound": "開啟介面互動音效",
+    "settings/cb_switch_notify": "接收語音切換通知",
+    "settings/cb_play_on_switch": "切換語音後播放選中的語音",
+
+    //   GroupBox3 顯示
+    "settings/display_title": "顯示設定",
+    "settings/cb_hotkey_enabled": "允許透過快速鍵開啟選單",
+    "settings/hotkey_label": "設定快速鍵",
+    "settings/log_label": "日誌輸出設定",
+    "settings/log_level/0": "僅ERROR",
+    "settings/log_level/1": "WARN 及以上",
+    "settings/log_level/2": "INFO 及以上",
+    "settings/log_level/3": "DEBUG 及以上",
+    "settings/ui_lang_label": "介面語言",
+    "settings/cb_show_ingame": "在設定選單中顯示遊戲內建語音包",
+    "settings/cb_show_installed": "在設定選單中顯示已安裝的語音包",
+
+    //   GroupBox4 語音通用
+    "settings/voice_general_title": "語音通用設定",
+    "settings/cb_auto_volume": "切換語音時自動套用預設音量",
+    "settings/cb_sound_remap": "允許使用聲音重映射",
+    "settings/cb_sound_bind": "允許使用聲音綁定",
+
+    //   GroupBox5 字幕通用
+    "settings/subtitle_general_title": "字幕通用設定",
+    "settings/subtitle_label": "字幕顯示",
+    "settings/radio_sub_simple": "簡潔",
+    "settings/radio_sub_standard": "標準",
+    "settings/radio_sub_none": "不顯示",
+    "settings/speed_label": "文字速度",
+    "settings/preview_text": "這是一個打字預覽範例文字，用於展示字幕通用設定中的文字速度效果。",
+    "settings/cb_sub_update": "允許字幕更新內容",
+    "settings/cb_sub_anim": "啟用字幕動畫效果",
+    "settings/cb_multi_sub": "允許同時顯示多條字幕",
+
+    //   GroupBox6 主題
+    "settings/theme/title": "UI 主題自訂",
+    "settings/theme/color_scheme_label": "色彩方案",
+    "settings/theme/bg_icon_label": "背景圖示",
+    "settings/theme/title_text_label": "標題文字顏色",
+    "settings/theme/radio_follow_scheme": "跟隨色彩方案",
+    "settings/theme/radio_custom": "自訂",
+    "settings/theme/color_input_placeholder": "#RRGGBB",
+    "settings/theme/default_label": "使用預設",
+    "settings/theme/bgicon_default_label": "預設",
+    "settings/theme/follow_pack_label": "跟隨語音包",
+
+    //   設定頁 tooltip
+    "settings/tooltip/nation_voice": "<p align=\"center\" size=\"15\"><b>系別語音設定</b></p><p align=\"left\">切換系別語音包的預設性別。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">僅在使用系別語音時生效</font></p>",
+    "settings/tooltip/sound_remap": "<p align=\"center\" size=\"15\"><b>聲音重映射</b></p><p align=\"left\">允許替換遊戲內特定聲音，擴大語音包對戰鬥語音的修改範圍。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">重映射方案由語音包指定，並隨語音包的切換而切換。</font></p>",
+    "settings/tooltip/sound_bind": "<p align=\"center\" size=\"15\"><b>聲音綁定</b></p><p align=\"left\">允許在特定聲音播放或指令發出後，播放語音包中的指定事件，等同人為創造一個「語音事件」。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">聲音綁定方案由語音包指定，並隨語音包的切換而切換。</font></p>",
+    "settings/tooltip/subtitle": "<p align=\"center\" size=\"15\"><b>字幕通用設定</b></p><p align=\"left\">以下設定僅適用於字幕語音包，並非所有語音包都有字幕。在這裡可以控制語音包字幕的顯示方式、速度和視覺效果。</p>",
+    "settings/tooltip/subtitle_simple": "<p align=\"center\" size=\"15\"><b>簡潔模式</b></p><p align=\"left\">僅顯示說話人名稱和台詞文字內容。此模式下字幕不再使用動畫效果，打字機效果不受影響。</p>",
+    "settings/tooltip/subtitle_standard": "<p align=\"center\" size=\"15\"><b>標準模式</b></p><p align=\"left\">顯示頭像、標題、文字和文字背景。</p>",
+    "settings/tooltip/subtitle_update": "<p align=\"center\" size=\"15\"><b>字幕內容更新</b></p><p align=\"left\"><font size=\"13\">在一段對話中，若前後說話人相同（角色代碼相同），則對話過渡時不彈出新字幕，改以更新目前字幕內容取代。</font></p>",
+    "settings/tooltip/subtitle_anim": "<p align=\"center\" size=\"15\"><b>字幕動畫效果</b></p><p align=\"left\">允許字幕淡入後依指定方式運動，插件目前支援六種動畫自由編排：「冒泡」、「驚嚇」、「搖頭」、「晃動」、「抱歉」、「點頭」。</p><br><p align=\"left\">．冒泡：字幕向上跳躍最後返回原位</p><p align=\"left\">．驚嚇：更快、移動範圍更大的冒泡</p><p align=\"left\">．搖頭：字幕進行左右擺動</p><p align=\"left\">．晃動：更快的左右擺動</p><p align=\"left\">．抱歉：反向冒泡</p><p align=\"left\">．點頭：更快的反向冒泡</p><br><p align=\"left\"><font class=\"secondary\" size=\"13\">運動範圍與字幕尺寸有關，字幕尺寸由其元件共同的包圍盒大小決定。</font></p>",
+    "settings/tooltip/multi_sub": "<p align=\"center\" size=\"15\"><b>多字幕同時出現</b></p><p align=\"left\">允許同時在螢幕上顯示多條字幕，新字幕不會覆蓋目前正在播放的字幕。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">關閉後新字幕進場時會打斷目前字幕，同一時間只顯示一條。</font></p>",
+    "settings/tooltip/text_speed": "<p align=\"center\" size=\"15\"><b>文字速度</b></p><p align=\"left\">控制字幕逐字出現的速度。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">可調節範圍：0~0.1，步長 0.01，速度為 0 代表不使用出字效果。<br>建議值 0.03~0.05。</font></p>",
+    "settings/tooltip/color_scheme": "<p align=\"center\" size=\"15\"><b>色彩方案</b></p><p align=\"left\">切換選單的整體配色。</p><p align=\"left\"><font class=\"secondary\" size=\"13\"><b>使用預設</b> — 暗色主題；<br><b>跟隨語音包</b> — 自動使用目前語音包的主題方案（若有的話）；<br>再往下為預設主題方案及自語音包讀取的方案。</font></p>",
+    "settings/tooltip/bg_icon": "<p align=\"center\" size=\"15\"><b>背景圖示</b></p><p align=\"left\">切換選單元件使用的自訂圖片，包含左側導覽列圖示和面板背景圖。</p><p align=\"left\"><font class=\"secondary\" size=\"13\"><b>預設</b> — 使用本機磁碟中的圖示；<br><b>跟隨語音包</b> — 自動使用目前語音包的圖示方案（若有的話）；<br>再往下為自各語音包讀取的圖示方案。</font></p>",
+    "settings/tooltip/title_text_color": "<p align=\"center\" size=\"15\"><b>標題顏色</b></p><p align=\"left\">控制選單頂部語音包名稱的文字顏色。</p><p align=\"left\"><font class=\"secondary\" size=\"13\"><b>跟隨色彩方案</b> — 使用色彩方案中定義的大標題顏色；<br><b>自訂</b> — 手動輸入十六進位顏色值（如 #FF0000），僅修改大標題顏色，不影響其他元件。</font></p>",
+    "settings/tooltip/title": "<p align=\"center\" size=\"15\"><b>插件設定面板</b></p><p align=\"left\">涵蓋大部分功能的設定面板。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">修改即刻保存，下次啟動生效。</font></p>",
+
+    //   語音切換頁
+    "voice_switch/title": "語音選擇",
+    "voice_switch/volume_label": "音量調整",
+    "voice_switch/preview_label": "測試聲音",
+    "voice_switch/play_btn": "播放",
+    "voice_switch/change_type_label": "變更類型",
+    "voice_switch/change_lang_label": "變更語言",
+    "voice_switch/type/default": "標準語音",
+    "voice_switch/type/nation": "國家語音",
+    "voice_switch/type/commander": "車長語音",
+    "voice_switch/type/crew": "車組語音",
+    "voice_switch/lang/default": "默認語種",
+    "voice_switch/lang/en": "英語",
+    "voice_switch/lang/ru": "俄語",
+    "voice_switch/lang/cn": "漢語",
+    "voice_switch/tag/full_crew": "[含車組]",
+    "voice_switch/tag/multi_lingual": "[多語言]",
+    "voice_switch/tab_ingame": "遊戲內建語音包",
+    "voice_switch/tab_outside": "已安裝的語音包",
+    "voice_switch/no_voice_packs": "（無可用語音包）",
+    "voice_switch/unsupported": "所選語音包不支援",
+    "voice_switch/event_prefix": "事件 ",
+
+    //   語音切換頁 tooltip
+    "voice_switch/tooltip/title": "<p align=\"center\" size=\"15\"><b>語音切換與聲音播放</b></p><p align=\"left\"><font color=\"#3D6B9B\">． 遊戲內建語音包</font><br><font size=\"13\"> 用戶端自帶的特殊車長語音。</font></p><p align=\"left\"><font color=\"#3D6B9B\">． 已安裝的語音包</font><br><font size=\"13\"> 自 .wotmod 檔案載入的第三方語音。</font></p><p align=\"left\"><font color=\"#3D6B9B\">． 試聽語音包中的聲音</font><br><font size=\"13\"> 該播放清單可由語音包指定，可能隨語音包不同而變化。</font></p><p align=\"left\"><font class=\"secondary\" size=\"13\">bnk 是動態載入的，某些 bnk 只在戰鬥中載入，位於其中的事件無法在車庫播放，請移步戰場。</font><br><font color=\"#FF8C00\" size=\"13\">請注意，依所在用戶端／伺服器的不同，部分語音包會因實際並不存在於遊戲資源檔案中而無法使用。</font></p>",
+    "voice_switch/tooltip/change_type": "<p align=\"center\" size=\"15\"><b>變更類型</b></p><p align=\"left\">針對部分特殊成員生效，可更換特殊語音類型為 <b>車長語音</b> 或 <b>車組語音</b>。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">對於擁有車組語音的車長，我在 ta 的名字後添加了對應標籤。</font></p>",
+    "voice_switch/tooltip/change_lang": "<p align=\"center\" size=\"15\"><b>變更語言</b></p><p align=\"left\">僅針對部分特殊成員生效，可更換語音語言，國服用戶端語言大體分為 RU EN CN。指示的語言不一定準確，因為「CN」既可以代表國語配音，也可以代表國服專屬版。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">對於擁有多語種語音的車長，我在 ta 的名字後添加了對應標籤。</font></p>",
+
+    //   個性設定頁
+    "personal/title": "個人化設定",
+    "personal/declaration": "先提醒你：被點亮後發出的是公頻喊話，所有人都看得到，也會被系統過濾。下面那個替換用的用戶端渲染文字，只有你看得到，且只替換你自己的訊息，不會被過濾。",
+    "personal/chat_msg_title": "局內喊話訊息自訂",
+    "personal/spotted_label": "被點亮時喊話",
+    "personal/preview_label": "預覽：",
+    "personal/alive_label": "附加條件：",
+    "personal/alive_desc": "當場上存活隊友數低於或等於",
+    "personal/replace_label": "替換既有喊話",
+    "personal/hint": "清空輸入框可還原為遊戲原始訊息",
+    "personal/spotted_placeholder": "輸入被點亮時要發送的隊內訊息...",
+    "personal/replace_placeholder": "輸入替換文字...",
+
+    //   個性設定頁 tooltip
+    "personal/tooltip/spotted_message": "<p align=\"center\"><font size=\"15\"><b>被點亮時喊話</b></font></p><p align=\"left\">被點亮（第六感觸發）時自動向隊伍發送此訊息。</p><p align=\"left\">使用佔位符 <b>&lt;a&gt;</b> 代指你目前的小地圖座標，可放在文中任意位置（也可不加）。</p><p align=\"left\"><font class=\"secondary\" size=\"14\">範例：我在&lt;a&gt;被點亮了 → 我在A1被點亮了</font></p>",
+
+    //   字幕設定頁
+    "subtitle_settings/title": "字幕設定",
+    "subtitle_settings/position_title": "調整字幕位置",
+    "subtitle_settings/btn_edit": "編輯",
+    "subtitle_settings/btn_done": "完成",
+    "subtitle_settings/btn_reset": "重設",
+    "subtitle_settings/btn_avatar": "調整頭像",
+    "subtitle_settings/btn_title": "調整標題",
+    "subtitle_settings/btn_bg": "調整背景",
+    "subtitle_settings/btn_body": "調整正文",
+
+    //   字幕設定頁 tooltip
+    "subtitle_settings/tooltip/page_title": "<p align=\"center\" size=\"15\"><b>調整字幕位置</b></p><p align=\"left\">按下「編輯」進入編輯模式，然後選擇對應按鈕啟用元件拖曳，按下重設按鈕可恢復為預設。</p><p align=\"left\"><font class=\"secondary\" size=\"13\">若字幕顯示處於簡潔模式，則僅可調整正文。簡潔模式與標準模式的字幕座標獨立保存，離開頁面將自動保存。</font></p>",
+
+    //   幫助頁 / 語音包詳情頁
+    "help/title": "幫助",
+    "help/tooltip/title": "<p align=\"center\" size=\"15\"><b>關於插件的一些說明</b></p><p align=\"left\">插件介紹、使用說明、常見問題等等。</p>",
+    "help/load_failed": "幫助內容載入失敗，請檢查檔案完整性。",
+    "detail/title": "語音包詳情",
+    "detail/no_info": "目前語音包未提供詳情資訊（info.html / info.txt）。",
+
+    //   ModsList 入口
+    "modslist/name": "語音包管理插件",
+    "modslist/description": "載入 wotmod 格式的語音包，支援語音修改、替換、字幕渲染等功能。",
+
+    //   通知
+    "notify/switch_title": "切換語音：{0}",
+    "notify/switch_success": "切換成功",
+    "notify/switch_fail": "切換失敗",
+    "notify/enabled": "語音包管理插件已<b>啟用</b>",
+    "notify/disabled": "語音包管理插件已<b>停用</b>",
+    "notify/welcome_title": "<font color=\"#cc9933\"><b>語音包管理插件</b></font>",
+    "notify/welcome_mods_list": "已安裝 ModsList，可透過車庫底部入口開啟選單",
+    "notify/welcome_hotkey": "你也可以使用快速鍵 <b>{0}</b> 呼出選單",
+    "notify/welcome_no_mods": "缺少 ModsListAPI，請按 <b>{0}</b> 快速鍵開啟選單面板",
+    "notify/welcome_no_mods_no_hotkey": "缺少 ModsListAPI，快速鍵目前處於停用狀態",
+    "notify/welcome_config_hint": "請安裝 ModsList 或編輯／刪除 config.json 來恢復快速鍵功能（路徑：{0}）",
+    "notify/welcome_footer": "你現在可以管理並啟用特定語音包了！插件目前版本：v<b>{0}</b>",
+    "notify/current_voice": "<font color=\"#cc9933\"><b>目前語音：</b></font><font color=\"#e0ffff\"><b>{0}</b></font>",
+    "notify/stats_installed": "已安裝的語音包：",
+    "notify/stats_installed_count": "語音包：",
+    "notify/stats_added": "新增語音包：",
+    "notify/stats_no_new": "沒有偵測到新的語音包。",
+    "notify/stats_removed": "已移除的語音包：",
+    "notify/stats_empty": "啊咧？你沒有安裝語音包嗎？"
+}

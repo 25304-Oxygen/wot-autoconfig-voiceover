@@ -1,0 +1,83 @@
+#
+<p align="center"><font size="18"><b>插件介绍</b></font></p>
+<br>
+<p align="left">
+<font size="15">这是一个让语音包之间能够彼此兼容的 Mod，支持功能：</font>
+</p>
+<p align="left">
+<font size="15"><b>．语音增强：</b></font>
+扩大了语音修改范围和触发范围，通过为语音包附加指定格式的文件使用这个功能，
+可以替换任意由 WWISE Event 驱动的声音，还支持在某些声音或指令触发时播放指定的声音。<br>
+<font size="15"><b>．特殊语音覆盖：</b></font>
+使用带语音包的车长进入战斗后，强制将特殊语音切回插件中选择的当前语音包；若是普通车长，
+<b>不进行强制修改</b>，你依然可以通过游戏设置菜单随时切换语音，无需呼出插件面板。
+不过还是更推荐通过插件切换。<br>
+<font size="15"><b>．字幕渲染：</b></font>
+实现了一个类似官方少战字幕插件的功能，通过为语音包附加指定格式的文件使用这个功能，
+能实现多种字幕视觉效果，最大程度支持 DIY，优化字幕队列。<br>
+<font size="15"><b>．其他功能：</b></font>
+<font class="secondary" siez="14">
+实现了类似点亮喊话的功能，可以自行编辑喊话文本，并实现了替换游戏内快捷消息文本，
+编辑后的快捷消息文本仅本机可见。这部分功能与声音修改无关。</font>
+</p><br>
+<p align="center"><font size="18"><b>文件说明与介绍</b></font></p>
+<br>
+<p align="left">
+插件运行时会将数据持久化存储在磁盘中，删除文件以恢复为默认，文件存储目录：{0}
+</p>
+<p align="left">
+<font size="15"><b>．bgimgs 文件夹：</b></font>
+插件使用的背景图（menu.png, panel.png, page.png, 尺寸/宽高分别为: 260×260, 620×260
+, 680×500, 以像素为单位），可以自行替换。<br>
+<font size="15"><b>．icons 文件夹：</b></font>
+左侧导航栏图标（help.png, settings.png, voice.png, 尺寸/宽高为: 84×84, 以像素为单位,
+推荐大小 64×64），可以自行替换。<br>
+<font size="15"><b>．jsons 文件夹：</b></font>
+gameSoundModes.json（内置语音包列表，可编辑名称、音量，可调整顺序），
+hotkey.json（热键代码，用于选择并设置热键），ingameGuiText.json（快捷消息文本代码，用于
+游戏内文本消息替换），personal_settings.json（点亮喊话与快捷消息替换），playEvent.json
+（声音播放列表，按事件名播放声音），theme.json（UI 颜色方案表，可自行编辑），voiceover.json
+（第三方语音包列表，仅可编辑音量）<br>
+<font size="15"><b>．l10n 文件夹：</b></font>
+用于 UI 界面翻译，可自行编辑。<br>
+<font size="15"><b>．subtitles 文件夹：</b></font>
+保存各个字幕语音包字幕组件偏移量，简洁模式与标准模式独立保存偏移量。<br>
+<font size="15"><b>．config.json：</b></font>
+<font class="secondary" siez="14">配置文件。</font><br>
+<font size="15"><b>．script.log：</b></font>
+<font class="secondary" siez="14">运行时日志，可以在设置中修改日志输出等级。</font>
+</p><br>
+<p align="center"><font size="18"><b>常见问题 Q&amp;A</b></font></p>
+<br>
+<p align="left">
+<font size="15"><b>  Q1: 我下载的语音包没有找到？</b></font><br>
+<font class="secondary" siez="14">  A: 语音包需要为 wotmod 格式，并按照指定的方式组织文件。</font><br>
+<font size="15"><b>  Q2: 安装了 wotmod 格式的语音包没有找到？</b></font><br>
+<font class="secondary" siez="14">  A: 这通常是因为文件组织方式不正确，进入配置文件夹，
+打开日志 script.log，查看错误原因。</font><br>
+<font size="15"><b>  Q3: 我不会打包语音包，怎么让语音包被识别到？</b></font><br>
+<font class="secondary" siez="14">  A: 别怕，有语音包一键转化工具，
+详见 up 主 <a href='event:bilibili'><font color="#4A90D9"><u>@APTXPC</u></font></a> 的动态。转化出来的
+是旧格式打包的语音包，但一样能兼容。</font><br>
+<font size="15"><b>  Q4: 我想自己打包语音包，要怎么做？</b></font><br>
+<font class="secondary" siez="14">  A: GitHub 仓库中有文字教程，bilibili 也会陆续发布教程和视频教程。</font><br>
+<font size="15"><b>  Q5: 语音包为什么没有字幕？</b></font><br>
+<font class="secondary" siez="14">  A: 不是所有语音包都带字幕，字幕是自己一条条添加了才有的。</font><br>
+<font size="15"><b>  Q6: 字幕语音包没有字幕？</b></font><br>
+<font class="secondary" siez="14">  A: 如果是旧格式的 wotmod 语音包，字幕功能不可用，请等语音包作者更新；否则就是
+文件组织不正确，一般来说就是样式文件读取失败，你可以在日志找到线索。</font><br>
+<font size="15"><b>  Q7: 我想学习如何制作字幕语音包？</b></font><br>
+<font class="secondary" siez="14">  A: 首先你得会做语音包，然后做好心理准备，最好有足够的厨力，做起来比较耗时。
+教程发布请留意 up 主动态。</font><br>
+</p><br>
+<p align="center"><font size="18"><b>疑难杂症与 BUG 反馈</b></font></p>
+<br>
+<p align="left">
+．创建 GitHub Issues：<a href='event:github'><font color="#4A90D9"><u>GitHub 仓库</u></font></a><br>
+．bilibili 私信或视频下留言互动：<a href='event:bilibili_2'><font color="#4A90D9"><u>@下一个车站等你</u></font></a>
+</p>
+<br>
+<p align="left"><font class="secondary">
+插件当前版本：v{1}<br>鸣谢：claude code、deepseek-v4
+</font></p>
+<p align="center"><img src="mods/autoconfigvoiceover/icons/icon.png"/></p>
