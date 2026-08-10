@@ -364,7 +364,10 @@ def _send_team_message(text):
 def _check_and_send_spotted_message():
     """第六感触发 → 检查条件 → 自动发送自定义被点亮喊话。"""
     try:
-        # 观战模式下第六感属于被观战车辆，不是自己的 → 不喊话
+        # 玩家自己的车已阵亡 → 死亡观战/幽灵状态，第六感属于被观战车 → 不喊话
+        if not avatar_getter.isVehicleAlive():
+            return
+        # 训练模式旁观者阵营（自由摄像头，车辆带 observer 标志）→ 不喊话
         if avatar_getter.isObserver():
             return
 
