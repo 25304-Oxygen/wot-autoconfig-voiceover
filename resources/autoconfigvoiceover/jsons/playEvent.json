@@ -169,19 +169,19 @@
     }, 
     {
         "text": "观察孔受损",
-        "event": "vo_turret_rotator_functional"
+        "event": "vo_surveying_devices_damaged"
     }, 
     {
         "text": "观察孔严重受损",
-        "event": "vo_turret_rotator_functional"
+        "event": "vo_surveying_devices_crit_damaged"
     }, 
     {
         "text": "观瞄设备被摧毁",
-        "event": "vo_turret_rotator_functional"
+        "event": "vo_surveying_devices_destroyed"
     }, 
     {
         "text": "观察孔清理完毕",
-        "event": "vo_turret_rotator_functional"
+        "event": "vo_surveying_devices_functional"
     }, 
     {
         "text": "战斗中组队：发送协助请求",
