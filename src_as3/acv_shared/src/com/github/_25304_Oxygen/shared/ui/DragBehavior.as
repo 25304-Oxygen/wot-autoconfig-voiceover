@@ -219,8 +219,12 @@ package com.github._25304_Oxygen.shared.ui
         {
             if (!_stage) return;
 
-            var maxW:int = _stage.stageWidth;
-            var maxH:int = _stage.stageHeight;
+            // 边界用逻辑屏幕尺寸（App.appWidth/Height）。
+            // stage.stageWidth/Height 是物理分辨率（interfaceScale 2x 时 4K=3840×2160），
+            // 而 target 坐标是逻辑空间（内容被 stage.scaleX/Y 整体放大），
+            // 用物理值做 clamp 会把窗口拖到屏幕外（2x 时允许拖到 7680）。
+            var maxW:int = App.appWidth;
+            var maxH:int = App.appHeight;
 
             var hw:Number = _handleW > 0 ? _handleW : _target.width;
             var hh:Number = _handleH > 0 ? _handleH : _target.height;
@@ -245,8 +249,9 @@ package com.github._25304_Oxygen.shared.ui
         {
             if (!_stage) return {x: _target.x, y: _target.y};
 
-            var maxW:int = _stage.stageWidth;
-            var maxH:int = _stage.stageHeight;
+            // 同 _clampNow：用逻辑屏幕尺寸做边界，与 target 坐标空间一致。
+            var maxW:int = App.appWidth;
+            var maxH:int = App.appHeight;
 
             var hw:Number = _handleW > 0 ? _handleW : _target.width;
             var hh:Number = _handleH > 0 ? _handleH : _target.height;

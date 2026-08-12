@@ -1150,8 +1150,12 @@ package com.github._25304_Oxygen.menu.components
         /** 将位置限制在舞台可见区域内。 */
         private function _clampPosition(x:Number, y:Number):Point
         {
-            var stageW:Number = this.stage ? this.stage.stageWidth : 1920;
-            var stageH:Number = this.stage ? this.stage.stageHeight : 1080;
+            // 用逻辑屏幕尺寸（App.appWidth/Height）clamp：stage.stageWidth/Height
+            // 是物理分辨率（interfaceScale 2x 时 4K=3840×2160），tooltip 坐标
+            // 是逻辑空间，用物理值会把 tooltip 弹到屏幕外。与 WG ToolTipBase
+            // fadeIn 直接对 App.appWidth/Height 取边界一致。
+            var stageW:Number = App.appWidth;
+            var stageH:Number = App.appHeight;
             var w:Number = _bg ? _bg.width : 100;
             var h:Number = _bg ? _bg.height : 40;
             var margin:int = STAGE_MARGIN;

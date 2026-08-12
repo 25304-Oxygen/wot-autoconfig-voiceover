@@ -1327,6 +1327,15 @@ package com.github._25304_Oxygen.menu
         // 屏幕定位
         // ════════════════════════════════════
 
+        /**
+         * 容器定位：首次居中于屏幕，之后恢复上次归一化位置。
+         *
+         * 用 App.appWidth/appHeight（逻辑坐标）而非 stage.stageWidth/stageHeight
+         * （物理分辨率）。interfaceScale（如 4K 2x）下 stage.scaleX/Y = 2 会把
+         * 内容整体放大 2x，但 stage 尺寸仍返回物理值（3840×2160）；若按物理值
+         * 定位（3840/2=1920），容器逻辑坐标会被放大到屏幕外。
+         * 与 WG 各窗口居中写法（App.appWidth >> 1）一致。
+         */
         private function _positionContainer():void
         {
             if (!stage) return;
@@ -1334,8 +1343,8 @@ package com.github._25304_Oxygen.menu
                 _applyNormalizedPosition();
             else
             {
-                _container.x = int(stage.stageWidth / 2) - BIG_R - int(SEMI_W / 2) + 10;
-                _container.y = int(stage.stageHeight / 2) - BIG_R;
+                _container.x = int(App.appWidth / 2) - BIG_R - int(SEMI_W / 2) + 10;
+                _container.y = int(App.appHeight / 2) - BIG_R;
                 _positioned = true;
                 _saveNormalizedPosition();
             }
@@ -1348,18 +1357,20 @@ package com.github._25304_Oxygen.menu
             if (_drag) _drag.clamp();
         }
 
+        /** 保存归一化位置——以逻辑屏幕尺寸（App.appWidth/Height）为基准。 */
         private function _saveNormalizedPosition():void
         {
             if (!stage) return;
-            _normX = (_container.x + BIG_R) / stage.stageWidth;
-            _normY = (_container.y + BIG_R) / stage.stageHeight;
+            _normX = (_container.x + BIG_R) / App.appWidth;
+            _normY = (_container.y + BIG_R) / App.appHeight;
         }
 
+        /** 恢复归一化位置——保存/恢复使用同一基准，缩放无关。 */
         private function _applyNormalizedPosition():void
         {
             if (!stage) return;
-            _container.x = int(_normX * stage.stageWidth - BIG_R);
-            _container.y = int(_normY * stage.stageHeight - BIG_R);
+            _container.x = int(_normX * App.appWidth - BIG_R);
+            _container.y = int(_normY * App.appHeight - BIG_R);
         }
 
         // ════════════════════════════════════
