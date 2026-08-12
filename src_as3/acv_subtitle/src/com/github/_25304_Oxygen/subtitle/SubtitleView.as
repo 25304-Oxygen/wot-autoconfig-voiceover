@@ -396,13 +396,23 @@ package com.github._25304_Oxygen.subtitle
         // 定位
         // ═══════════════════════════════════════════════════════
 
-        /** 容器定位: 屏幕底部居中。 */
+        /** 容器定位: 屏幕底部居中（用 App.appWidth/appHeight 逻辑坐标）。
+         *
+         * WoT 界面缩放（interfaceScale）下，AbstractApplication.as_updateStage 会
+         * 设 stage.scaleX/Y = 缩放系数（如 2x）做全局放大，但 stage.stageWidth/
+         * stage.stageHeight 仍返回物理分辨率（如 4K = 3840×2160）。用它们定位，
+         * 容器坐标会被 2x 放大到屏幕外（4K 2x 时 y=2160-80 → 实际渲染在 4160），
+         * 字幕整个跑出屏幕 → “不显示”。
+         *
+         * App.appWidth/appHeight 已除以缩放系数（4K 2x → 1920×1080，即逻辑空间），
+         * 与 GUP（GupSubtitles.update_layout 用 App.appWidth/appHeight）一致。
+         */
         private function _positionContainer():void
         {
             if (!stage || !_container) return;
 
-            _container.x = int(stage.stageWidth / 2);
-            _container.y = stage.stageHeight - BOTTOM_MARGIN;
+            _container.x = int(App.appWidth / 2);
+            _container.y = App.appHeight - BOTTOM_MARGIN;
 
             L.debug("容器定位: (" + _container.x + "," + _container.y + ")");
         }
