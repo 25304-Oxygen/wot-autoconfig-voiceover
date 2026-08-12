@@ -84,6 +84,31 @@ def _new_setPlayerVehicle(original_func, self, vehiclePublicInfo, isPlayerVehicl
     _load_subtitle_view()
 
 
+@override(SpecialSoundCtrl, '_SpecialSoundCtrl__setSpecialVoice')
+def _new_setSpecialVoice(original_func, self, params):
+    """源点替换特殊车长语音的 languageMode，让 GUP 字幕跟随 ACV 选择。
+
+    推测 GUP 字幕引擎对特殊车长按 SpecialSoundCtrl.specialVoice
+    （即 __currentMode）选择字幕；普通车长 specialVoice 为 None，
+    它才退而读 soundModes.currentMode。此前我们只强制 setMode 
+    只改了 currentMode，改不动 __currentMode，所以特殊车长的字幕
+    永远按真实车长语音显示
+
+    这里在 __setSpecialVoice 的入口把 params.languageMode 换成 ACV
+    解析出的模式，让游戏自身把特殊语音伪装成 ACV 选择。
+    """
+    from autoconfigvoiceover.config import is_enabled
+    from autoconfigvoiceover.voices import voice_switcher
+    if voice_switcher._in_battle and is_enabled():
+        mode_name = voice_switcher.get_current_mode_name()
+        if mode_name and mode_name != 'default':
+            try:
+                params = params._replace(languageMode=mode_name)
+            except Exception:
+                logger.exception('替换特殊语音 languageMode 失败，保持原样')
+    return original_func(self, params)
+
+
 def _load_subtitle_view():
     """尝试加载字幕 View。"""
     try:
