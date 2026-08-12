@@ -54,6 +54,12 @@ _manager = None          # BaseSubtitleManager 实例
 _on_edit_offset_cb = None  # 字幕编辑偏移回调
 _preload_pending = []    # 待预加载的图片 URL 列表（DAAPI 就绪前暂存）
 
+# 战斗→车库切换时 lobby app 重建中，loadView 请求不立即创建 View，
+# 轮询检查 _view_instance，直到 __init__ 回调设置引用或超时。
+_LOAD_RETRY_COUNT = 40     # 最大轮询次数
+_LOAD_RETRY_DELAY = 0.5    # 轮询间隔（秒），总窗口约 20 秒
+_load_in_progress = False  # loadView + 就绪轮询进行中，防止重复触发
+
 
 def set_edit_offset_callback(cb):
     """设置字幕编辑偏移回调（subtitle_settings_page 进入编辑模式时调用）。
@@ -420,16 +426,26 @@ def init_subtitle():
 
 
 def load_subtitle_view():
-    """在当前 app 上下文中加载字幕 View（手动触发）。"""
+    """在当前 app 上下文中加载字幕 View（手动触发）。
+
+    战斗→车库切换期间 lobby app 重建中，loadView 请求会被框架排队，
+    不立即创建 View；loadView 返回时 _view_instance 可能仍为 None。
+    """
     from gui.Scaleform.framework.managers.loaders import SFViewLoadParams
     from gui.shared.personality import ServicesLocator
 
-    global _view_instance
+    global _view_instance, _load_in_progress
+
+    if _load_in_progress:
+        logger.info('字幕 View 加载已在进行，跳过本次请求')
+        return
+    _load_in_progress = True
 
     try:
         app = ServicesLocator.appLoader.getApp()
         if app is None:
             logger.warn('无法获取当前 app，字幕 View 加载失败')
+            _load_in_progress = False
             return
 
         _view_instance = None  # 清除旧引用，等待 __init__ 回调
@@ -437,10 +453,33 @@ def load_subtitle_view():
 
         if _view_instance is not None:
             logger.info('字幕 View 已加载（通过 __init__ 回调）')
-        else:
-            logger.info('loadView 返回后 _view_instance 仍为 None（SWF 异步加载中或加载失败）')
+            _load_in_progress = False
+            return
+
+        logger.info('loadView 返回后 _view_instance 仍为 None，启动就绪轮询...')
+        _poll_view_ready(0)  # 结束或超时时由 _poll_view_ready 复位 _load_in_progress
     except Exception:
         logger.exception('字幕 View 加载失败（SWF 是否已编译？）')
+        _load_in_progress = False
+
+
+def _poll_view_ready(attempt):
+    """检查 _view_instance 是否已由 __init__ 回调设置。"""
+    global _load_in_progress
+
+    import BigWorld
+
+    v = _view_instance
+    if v is not None:
+        logger.info('字幕 View 已就绪（loadView 后第 %d 次轮询）', attempt + 1)
+        _load_in_progress = False
+        return
+    if attempt + 1 >= _LOAD_RETRY_COUNT:
+        logger.warn('字幕 View 就绪轮询 %d 次仍无结果，放弃本次加载（下次 ensure 会重试）',
+                    _LOAD_RETRY_COUNT)
+        _load_in_progress = False
+        return
+    BigWorld.callback(_LOAD_RETRY_DELAY, lambda: _poll_view_ready(attempt + 1))
 
 
 def ensure_subtitle_view():
