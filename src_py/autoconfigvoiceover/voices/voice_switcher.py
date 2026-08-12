@@ -263,6 +263,17 @@ def switch_voice(voice_id, type_index=0, lang_index=0, silent=False):
         # ActiveVoice 激活 + 广播 onActiveVoiceChanged
         _activate_if_needed(voice_id)
 
+        # ── 战斗中切换 → 触发外部字幕引擎(GUP)重同步 ──
+        # GUP 等外部引擎在 setPlayerVehicle 链上匹配字幕，ACV 的 setMode
+        # 直达底层、不触发它，故战斗中切换后字幕不跟随。这里模拟游戏
+        # 设置"试听"链路（refreshNationalVoice）让字幕跟随本次切换。
+        # 独立 try：重同步失败不影响本次切换成功。
+        if _in_battle:
+            try:
+                _re_sync_external_engine(voice_id)
+            except Exception:
+                logger.exception('外部字幕引擎重同步失败（不影响本次切换）')
+
     except Exception:
         # ── 切换失败 → 回退 default voiceLanguage ──
         logger.exception('语音切换失败，回退 default voiceLanguage')
@@ -456,6 +467,43 @@ def get_current_mode_name():
     用于进战场时兜底——无论游戏把模式改成什么，最后强制拉回此值。
     """
     return _current_resolved_mode
+
+
+# ═════════════════════════════════════════════════════════════
+# 外部字幕引擎重同步（GUP 等）
+# ═════════════════════════════════════════════════════════════
+
+def _re_sync_external_engine(voice_id):
+    """战斗中切换语音后，重新出发 GUP Mod 字幕引擎的同步点。
+
+    推测 GUP Mod 在 SpecialSoundCtrl.setPlayerVehicle 链上读取
+    当前语音模式并重新匹配字幕；游戏设置菜单的"试听"也走这条链
+    （AltVoicesSetting.clearPreviewSound → Vehicle.refreshNationalVoice）。
+    之前使用 setMode 直接修改语音，不触发该链，导致 GUP Mod 字幕不跟随。
+    """
+    import BigWorld
+    import SoundGroups
+    player = BigWorld.player()
+    vehicle = getattr(player, 'vehicle', None)
+    if vehicle is None:
+        logger.debug('重同步: 当前无 vehicle，跳过')
+        return
+    try:
+        vehicle.refreshNationalVoice()
+    except Exception:
+        logger.exception('refreshNationalVoice 触发外部同步失败')
+    # refreshNationalVoice 会按车辆/乘组重设语音（普通成员→系别音、
+    # 特殊车长→特殊语音），重置 ACV 选择恢复
+    try:
+        SoundGroups.g_instance.soundModes.setMode(_current_resolved_mode)
+    except Exception:
+        logger.exception('重置 ACV 语音模式失败')
+    try:
+        SoundGroups.g_instance.soundModes.setNationalMappingByMode(_current_resolved_mode)
+    except Exception:
+        pass
+    # ensure_active_voice 可能已按旧 config 重激活，拉回本次目标
+    _activate_if_needed(voice_id)
 
 
 # ═════════════════════════════════════════════════════════════
