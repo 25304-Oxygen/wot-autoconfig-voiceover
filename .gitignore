@@ -6,6 +6,8 @@ build/
 *.swf
 *.pyc
 
+obj/
+
 docs/开发文档.md
 docs/字幕引擎使用指南.md
 docs/Usage of Subtitle Engine.md
