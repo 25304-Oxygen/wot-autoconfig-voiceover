@@ -158,6 +158,7 @@ package com.github._25304_Oxygen.menu.pages
         private var _cbAutoVolume:CheckBox;
         private var _cbSoundRemap:CheckBox;
         private var _cbSoundBind:CheckBox;
+        private var _cbVoiceOverride:CheckBox;
 
         // ── GB5: 字幕通用设置 ──
         private var _gb5:GroupBox;
@@ -583,18 +584,28 @@ package com.github._25304_Oxygen.menu.pages
             };
             _gb4.content.addChild(_cbSoundRemap);
 
-            // ── 右列: 声音绑定 ──
+            // ── 右列: 声音绑定 + 覆盖车长特殊语音 ──
+            var ry:int = GB_INNER_PAD;
             _cbSoundBind = new CheckBox(L10n.get("settings/cb_sound_bind", "允许使用声音绑定"), false, COMP_LABEL_W);
             _cbSoundBind.x = COL_R;
-            _cbSoundBind.y = GB_INNER_PAD;
+            _cbSoundBind.y = ry;
             _cbSoundBind.onChange = function(checked:Boolean):void {
                 _onCheckboxChanged("soundBind", checked);
             };
             _gb4.content.addChild(_cbSoundBind);
+            ry += Math.max(CHECK_ROW_H, _cbSoundBind.height);
 
-            // max 排版：高度取左右两列内容的较高者（右列按实测高度）
+            _cbVoiceOverride = new CheckBox(L10n.get("settings/cb_voice_override", "覆盖车长特殊语音"), false, COMP_LABEL_W);
+            _cbVoiceOverride.x = COL_R;
+            _cbVoiceOverride.y = ry;
+            _cbVoiceOverride.onChange = function(checked:Boolean):void {
+                _onCheckboxChanged("voiceOverride", checked);
+            };
+            _gb4.content.addChild(_cbVoiceOverride);
+
+            // max 排版：高度取左右两列内容的较高者
             _gbHeights[3] = Math.max(GB4_H,
-                GB_HEADER_H + Math.max(ly, GB_INNER_PAD + _cbSoundBind.height) + GB_BOTTOM_PAD);
+                GB_HEADER_H + Math.max(ly, ry) + GB_BOTTOM_PAD);
             _gb4.setSize(GB_W, _gbHeights[3]);
             return _gb4;
         }
@@ -901,9 +912,11 @@ package com.github._25304_Oxygen.menu.pages
             var ly4:int = GB_INNER_PAD;
             _cbAutoVolume.y = ly4;  ly4 += Math.max(CHECK_ROW_H, _cbAutoVolume.height);
             _cbSoundRemap.y = ly4;
-            _cbSoundBind.y = GB_INNER_PAD;
+            var ry4:int = GB_INNER_PAD;
+            _cbSoundBind.y = ry4;       ry4 += Math.max(CHECK_ROW_H, _cbSoundBind.height);
+            _cbVoiceOverride.y = ry4;
             _gbHeights[3] = Math.max(GB4_H,
-                GB_HEADER_H + Math.max(ly4, GB_INNER_PAD + _cbSoundBind.height) + GB_BOTTOM_PAD);
+                GB_HEADER_H + Math.max(ly4, ry4) + GB_BOTTOM_PAD);
             _gb4.setSize(GB_W, _gbHeights[3]);
 
             // ── GB5: 字幕通用设置（预览区高度按实测，populate 换文后再次重排）──
@@ -1097,6 +1110,7 @@ package com.github._25304_Oxygen.menu.pages
             if (_cbAutoVolume) _cbAutoVolume.setLabel(L10n.get("settings/cb_auto_volume", "切换语音时自动应用预设音量"));
             if (_cbSoundRemap) _cbSoundRemap.setLabel(L10n.get("settings/cb_sound_remap", "允许使用声音重映射"));
             if (_cbSoundBind) _cbSoundBind.setLabel(L10n.get("settings/cb_sound_bind", "允许使用声音绑定"));
+            if (_cbVoiceOverride) _cbVoiceOverride.setLabel(L10n.get("settings/cb_voice_override", "覆盖车长特殊语音"));
 
             if (_gb5) _gb5.setTitle(L10n.get("settings/subtitle_general_title", "字幕通用设置"));
             if (_subtitleLabelTF) _subtitleLabelTF.text = L10n.get("settings/subtitle_label", "字幕显示");
@@ -1442,9 +1456,10 @@ package com.github._25304_Oxygen.menu.pages
             _applyCheck(data, "showInstalledVoices", _cbShowInstalled);
 
             // ── GB4: 语音通用设置 ──
-            _applyCheck(data, "autoVolume", _cbAutoVolume);
-            _applyCheck(data, "soundRemap",  _cbSoundRemap);
-            _applyCheck(data, "soundBind",   _cbSoundBind);
+            _applyCheck(data, "autoVolume",    _cbAutoVolume);
+            _applyCheck(data, "soundRemap",    _cbSoundRemap);
+            _applyCheck(data, "soundBind",     _cbSoundBind);
+            _applyCheck(data, "voiceOverride", _cbVoiceOverride);
 
             // ── GB5: 字幕通用设置 ──
             if (data.subtitleDisplay != null && _subtitleRadioGroup)
@@ -1632,7 +1647,7 @@ package com.github._25304_Oxygen.menu.pages
             _gb3 = null;  _cbHotkey = null;  _ddHotkey = null;  _ddLogLevel = null;
             _ddUiLang = null;
             _cbShowIngame = null;  _cbShowInstalled = null;
-            _gb4 = null;  _cbAutoVolume = null;  _cbSoundRemap = null;  _cbSoundBind = null;
+            _gb4 = null;  _cbAutoVolume = null;  _cbSoundRemap = null;  _cbSoundBind = null;  _cbVoiceOverride = null;
             _gb5 = null;  _subtitleRadioGroup = null;
             _subSimple = null;  _subStandard = null;  _subNone = null;
             _stepperTextSpeed = null;  _cbSubUpdate = null;  _cbSubAnim = null;  _cbMultiSub = null;
