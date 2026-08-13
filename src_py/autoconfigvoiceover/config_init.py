@@ -102,12 +102,16 @@ def ensure_config_ready():
     # 情况3: 版本过旧
     version = cfg.get('__version__', 0)
     if version < MOD_CONFIG_VERSION:
-        logger.info('配置版本 %d < %d，重建配置并刷新资源',
-                    version, MOD_CONFIG_VERSION)
-        # 版本 < 5 时清理旧版遗留目录（模板 / 旧图片目录）
         if version < 5:
+            # 版本 < 5 时清理旧版遗留目录（模板 / 旧图片目录）
+            logger.info('配置版本 %d < %d，重建配置并刷新资源',
+                        version, MOD_CONFIG_VERSION)
             _cleanup_legacy_folders()
-        _rebuild_config_and_resources()
+            _rebuild_config_and_resources()
+            return
+        # 5 ≤ 版本 < 当前版本：保留用户设置并补全缺失键
+        logger.info('配置版本 %d < %d，补全缺失键', version, MOD_CONFIG_VERSION)
+        _backfill_missing_keys()
         return
 
     # 配置就绪，仅补充缺失的个别资源文件（用户可能手动删了某个文件）
@@ -262,6 +266,12 @@ def _rebuild_config_and_resources():
     """覆盖 config.json → 覆盖全部 VFS 资源到磁盘。"""
     _write_default_config()
     _copy_all_resources()
+
+
+def _backfill_missing_keys():
+    """补全配置中缺失的键（DEFAULTS 兜底），保留用户已有设置。"""
+    from .config import save_config
+    save_config({})
 
 
 def _ensure_dirs():
