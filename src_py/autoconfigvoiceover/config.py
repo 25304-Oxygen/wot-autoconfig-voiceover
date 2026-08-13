@@ -91,6 +91,7 @@ DEFAULTS = {
         'autoVolume':          True,
         'soundRemap':          True,
         'soundBind':           True,
+        'voiceOverride':       True,
         'subtitleUpdate':      True,
         'subtitleAnim':        True,
         'multiSub':            False,
@@ -256,6 +257,12 @@ _TEMPLATE = '''\
         "soundBind": {soundBind},
 
         //
+        // 使用特殊车长时是否强制拉回插件选择的语音，关闭后特殊车长使用自己的特殊语音
+        // （true / false）
+        //
+        "voiceOverride": {voiceOverride},
+
+        //
         // 是否允许字幕更新内容，同一个说话人下一条字幕将以内容更新的方式出现
         // （true / false）
         //
@@ -348,8 +355,6 @@ def load_config(log=True):
 
     文件不存在 → 返回 DEFAULTS 副本。
     文件缺少某键 → DEFAULTS 中的值自动补全。
-    值是否正确（如 colorScheme/bgIcon 是否在选项列表中）由消费方
-    校验并回退默认——插件未发布，不做旧值兼容迁移。
     """
     data = load_jsonc(CONFIG_FILE)
     if data is None:
