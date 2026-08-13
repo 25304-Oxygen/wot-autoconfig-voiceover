@@ -261,6 +261,7 @@ class SettingsPage(object):
         self._play_on_switch = se.get('playOnSwitch', True)
         self._sound_remap = se.get('soundRemap', True)
         self._sound_bind = se.get('soundBind', True)
+        self._voice_override = se.get('voiceOverride', True)
 
         # ── GB5: 字幕通用设置 ──
         self._subtitle_display = se.get('subtitleDisplay', 'standard')
@@ -359,10 +360,11 @@ class SettingsPage(object):
             'showInstalledVoices': 1 if self._show_installed_voices else 0,
 
             # ── GB4: 语音通用设置 ──
-            'autoVolume':   1 if self._auto_volume else 0,
-            'playOnSwitch': 1 if self._play_on_switch else 0,
-            'soundRemap':   1 if self._sound_remap else 0,
-            'soundBind':    1 if self._sound_bind else 0,
+            'autoVolume':    1 if self._auto_volume else 0,
+            'playOnSwitch':  1 if self._play_on_switch else 0,
+            'soundRemap':    1 if self._sound_remap else 0,
+            'soundBind':     1 if self._sound_bind else 0,
+            'voiceOverride': 1 if self._voice_override else 0,
 
             # ── GB5: 字幕通用设置 ──
             'subtitleDisplay': self._subtitle_display,
@@ -448,6 +450,7 @@ class SettingsPage(object):
             'playOnSwitch':       '_play_on_switch',
             'soundRemap':         '_sound_remap',
             'soundBind':          '_sound_bind',
+            'voiceOverride':      '_voice_override',
             'subtitleUpdate':     '_subtitle_update',
             'subtitleAnim':       '_subtitle_anim',
             'multiSub':           '_multi_sub',
@@ -530,6 +533,7 @@ class SettingsPage(object):
             'playOnSwitch':        self._play_on_switch,
             'soundRemap':          self._sound_remap,
             'soundBind':           self._sound_bind,
+            'voiceOverride':       self._voice_override,
             'subtitleUpdate':      self._subtitle_update,
             'subtitleAnim':        self._subtitle_anim,
             'multiSub':            self._multi_sub,
