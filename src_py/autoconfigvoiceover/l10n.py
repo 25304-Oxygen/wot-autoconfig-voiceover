@@ -118,6 +118,7 @@ UI_LABELS = {
     'settings/cb_auto_volume':        '切换语音时自动应用预设音量',
     'settings/cb_sound_remap':        '允许使用声音重映射',
     'settings/cb_sound_bind':         '允许使用声音绑定',
+    'settings/cb_voice_override':     '覆盖车长特殊语音',
 
     #   GB5 字幕通用
     'settings/subtitle_general_title': '字幕通用设置',

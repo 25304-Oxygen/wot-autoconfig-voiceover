@@ -54,6 +54,7 @@
     "settings/cb_auto_volume": "切換語音時自動套用預設音量",
     "settings/cb_sound_remap": "允許使用聲音重映射",
     "settings/cb_sound_bind": "允許使用聲音綁定",
+    "settings/cb_voice_override": "覆蓋車長特殊語音",
 
     //   GroupBox5 字幕通用
     "settings/subtitle_general_title": "字幕通用設定",

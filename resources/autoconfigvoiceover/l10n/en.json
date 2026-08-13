@@ -43,6 +43,7 @@
     "settings/cb_auto_volume": "Apply the preset volume automatically when switching voices",
     "settings/cb_sound_remap": "Allow sound remapping",
     "settings/cb_sound_bind": "Allow sound binding",
+    "settings/cb_voice_override": "Override commander special voice",
 
     "settings/subtitle_general_title": "General Subtitle Settings",
     "settings/subtitle_label": "Subtitle display",
