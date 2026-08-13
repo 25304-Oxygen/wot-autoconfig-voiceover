@@ -478,6 +478,11 @@ class SettingsPage(object):
             from autoconfigvoiceover import update_hotkey_config
             update_hotkey_config()
 
+        # voiceOverride：即时更新战斗内特殊车长语音/字幕
+        if key == 'voiceOverride':
+            from autoconfigvoiceover.voices import voice_switcher
+            voice_switcher.apply_voice_override(checked_bool)
+
         # 字幕设置即时应用到 SubtitleManager
         if key in ('subtitleUpdate', 'multiSub'):
             from autoconfigvoiceover.subtitle.host import update_subtitle_settings

@@ -510,6 +510,49 @@ def _re_sync_external_engine(voice_id):
     _activate_if_needed(voice_id)
 
 
+def apply_voice_override(checked):
+    """局内即时应用 voiceOverride 变更（更新快照 + 触发一次语音/字幕同步）。
+
+    仅在战斗中且使用特殊车长时才有实际切换动作：
+      - 关闭 → 开启：refreshNationalVoice 按车辆/乘组自然重设后，
+        再 setMode(_current_resolved_mode) 强制拉回 ACV 选择
+      - 开启 → 关闭：仅 refreshNationalVoice —— 特殊车长恢复自己的语音，
+        GUP 字幕随 __currentMode 改为真实语言
+    非战斗 / 普通成员：只更新快照，后续逻辑自然生效。
+    """
+    global _voice_override_on
+    _voice_override_on = bool(checked)
+
+    if not (_in_battle and _has_special_crew):
+        logger.debug('voiceOverride=%s 已更新（非特殊车长战斗，无需即时切换）', _voice_override_on)
+        return
+
+    import BigWorld
+    import SoundGroups
+    player = BigWorld.player()
+    vehicle = getattr(player, 'vehicle', None)
+    if vehicle is None:
+        logger.debug('voiceOverride=%s 已更新（当前无 vehicle，跳过即时切换）', _voice_override_on)
+        return
+
+    # 游戏原生"恢复正常语音"链（游戏设置菜单试听后的标准恢复路径）：
+    # refreshNationalVoice 按车辆/乘组重设语音（特殊车长→特殊语音），
+    # 同时触发 GUP 字幕引擎在 setPlayerVehicle 链上的重新匹配
+    try:
+        vehicle.refreshNationalVoice()
+    except Exception:
+        logger.exception('voiceOverride 即时切换: refreshNationalVoice 失败')
+
+    if checked:
+        # 关闭 → 开启：重设后强制拉回 ACV 选择
+        try:
+            SoundGroups.g_instance.soundModes.setMode(_current_resolved_mode)
+        except Exception:
+            logger.exception('voiceOverride 即时切换: setMode 拉回失败')
+
+    logger.info('voiceOverride 已即时应用: %s（战斗内特殊车长）', '开启' if checked else '关闭')
+
+
 # ═════════════════════════════════════════════════════════════
 # 外部语音变化监测（游戏设置菜单被动切换）
 # ═════════════════════════════════════════════════════════════
