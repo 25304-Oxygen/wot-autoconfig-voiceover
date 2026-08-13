@@ -72,6 +72,12 @@ def _new_setPlayerVehicle(original_func, self, vehiclePublicInfo, isPlayerVehicl
         return
 
     # ── 特殊车长 → 首次强制掰回，后续由 setMode 钩子持续守护 ──
+    # voiceOverride 关闭：特殊车长用自己的语音，不强制
+    if not voice_switcher._voice_override_on:
+        logger.debug('setPlayerVehicle: 特殊车长，voiceOverride 关闭，放行')
+        _load_subtitle_view()
+        return
+
     from autoconfigvoiceover.voices.voice_switcher import get_current_mode_name
     import SoundGroups
 
@@ -99,7 +105,8 @@ def _new_setSpecialVoice(original_func, self, params):
     """
     from autoconfigvoiceover.config import is_enabled
     from autoconfigvoiceover.voices import voice_switcher
-    if voice_switcher._in_battle and is_enabled():
+    if (voice_switcher._in_battle and is_enabled()
+            and voice_switcher._voice_override_on):
         mode_name = voice_switcher.get_current_mode_name()
         if mode_name and mode_name != 'default':
             try:

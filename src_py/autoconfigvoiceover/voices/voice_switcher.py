@@ -21,6 +21,7 @@ _original_mapping_funcs = {}  # 被钩的原始函数引用（供 fini 还原）
 # ── 战斗状态标志 ──
 _in_battle = False               # 当前是否在战斗中
 _has_special_crew = False        # 当前战斗是否使用了特殊车长（specialVoice 非 None）
+_voice_override_on = True        # 战斗期 voiceOverride 快照（热路径避免反复读配置）
 _suppress_setmode_hook = False   # 抑制 setMode/mapping 钩子（original_func 执行期间）
 
 
@@ -30,9 +31,11 @@ def enter_battle():
     重置 _has_special_crew——每次新战斗（或复活）后，
     由 setPlayerVehicle 根据 self.specialVoice 重新判断。
     """
-    global _in_battle, _has_special_crew
+    global _in_battle, _has_special_crew, _voice_override_on
     _in_battle = True
     _has_special_crew = False
+    from autoconfigvoiceover.config import load_config
+    _voice_override_on = load_config(log=False).get('settings', {}).get('voiceOverride', True)
 
 
 def leave_battle():
@@ -40,9 +43,10 @@ def leave_battle():
 
     战斗状态全部清理，下次进战斗重新判定。
     """
-    global _in_battle, _has_special_crew, _suppress_setmode_hook
+    global _in_battle, _has_special_crew, _voice_override_on, _suppress_setmode_hook
     _in_battle = False
     _has_special_crew = False
+    _voice_override_on = True
     _suppress_setmode_hook = False
 
 
@@ -556,9 +560,13 @@ def init_monitoring():
             if _has_special_crew:
                 # 特殊车长：拦截所有外部 setMode
                 # （游戏每次语音播放的持续 enforcement + 游戏设置菜单）
-                logger.debug('setMode 钩子(特殊车长): 拦截 %s → %s',
-                           mode_name, _current_resolved_mode)
-                mode_name = _current_resolved_mode
+                # voiceOverride 关闭：放行游戏原始 setMode（特殊车长用自己的语音）
+                if _voice_override_on:
+                    logger.debug('setMode 钩子(特殊车长): 拦截 %s → %s',
+                               mode_name, _current_resolved_mode)
+                    mode_name = _current_resolved_mode
+                else:
+                    logger.debug('setMode 钩子(特殊车长): voiceOverride 关闭，放行 %s', mode_name)
             else:
                 # 普通成员：用户通过游戏设置菜单切换 → 临时同步，不落盘
                 logger.info('战斗中检测到用户切换语音(普通成员): %s', mode_name)
