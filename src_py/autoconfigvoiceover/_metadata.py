@@ -5,7 +5,7 @@
 """
 
 MOD_ID = 'autoConfigVoiceOver'
-MOD_VERSION = '1.0.5'
+MOD_VERSION = '1.0.6'
 MOD_CONFIG_VERSION = 6
 MOD_NAME = 'Voiceover Management Plugin'
 MOD_DESCRIPTION = '将第三方语音包添加进游戏，并提供语音切换等功能，作者[bilibili]下一个车站等你'
