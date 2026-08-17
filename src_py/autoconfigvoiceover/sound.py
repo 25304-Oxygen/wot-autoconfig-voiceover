@@ -20,11 +20,14 @@
   WW_playCameraOriented）:
 
     路径 A —— 一次性事件（直接替换事件名，无 .name 问题）:
-      WW_eventGlobal          2D 音效 ★
+      WW_eventGlobal          2D 音效 ★（默认保持 2D，仅白名单内转 3D）
       WW_eventGlobalPos       3D 位置音效
       WW_eventGlobalSync      同步 2D 音效 [NEW]
       WW_playCameraOriented   朝向 3D 音效 [NEW]
       playSound               碰撞/破坏音效 [NEW]
+
+    WW_eventGlobal 使用白名单（_route_3d_events），只对绑定/重映射方案中
+    命名的事件转 3D，让替换后的语音携带 marker 被字幕捕获。
 
     路径 B —— PySound 创建（替换事件名后调原始 C++ 函数）:
       WW_getSound             getSound2D/getSound3D 底层
@@ -432,11 +435,50 @@ def _on_wwise_marker(marker):
 _originals = {}   # {func_name: original_cpp_func}
 _hooked = False
 _voice_changed_registered = False  # 是否已注册 onActiveVoiceChanged 监听
+_route_3d_events = set()  # 2D→3D 路由白名单（见 _build_route_3d_events）
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # 语音切换 → 声音子系统联动
 # ═══════════════════════════════════════════════════════════════════════════
+
+def _build_route_3d_events(active_voice, se):
+    """构建 2D→3D 路由白名单。
+
+    语音包自身的语音都走 3D（getSound 系列），无需路由；只有被绑定或
+    被重映射的声音可能本身走 2D（playSound2D），需要转 3D 才能让替换
+    后的语音携带 marker 被字幕捕获。使用白名单保持 2D 不破坏游戏对象语义。
+
+    匹配采用事件名精确命中（大小写不敏感，同时存原形与小写）。
+    """
+    global _route_3d_events
+    events = set()
+    if active_voice is not None:
+        # —— 重映射：源与目标都纳入（源被路由后替换目标走 3D；
+        #    目标也可能被游戏直接播放）——
+        if se.get('soundRemap', False):
+            for src, dst in active_voice.remap.items():
+                events.add(src); events.add(src.lower())
+                if dst:
+                    events.add(dst); events.add(dst.lower())
+
+        # —— 绑定方案：match 关键词与 event 目标都纳入 ——
+        if se.get('soundBind', False):
+            data = active_voice.attach_data
+            if isinstance(data, dict):
+                for section_key in ('sound', 'cmd'):
+                    for rule in data.get(section_key, []):
+                        if not isinstance(rule, dict):
+                            continue
+                        for name in (_normalize_to_list(rule.get('match'))
+                                     + _normalize_to_list(rule.get('event'))):
+                            name = (name or '').strip()
+                            if name:
+                                events.add(name); events.add(name.lower())
+
+    _route_3d_events = events
+    logger.debug('2D→3D 路由白名单: %d 个事件', len(events))
+
 
 def _on_active_voice_changed(active_voice):
     """当用户切换语音包时，将新语音包的重映射表和绑定方案应用到引擎。
@@ -479,6 +521,10 @@ def _on_active_voice_changed(active_voice):
             logger.debug('语音包无绑定方案，绑定引擎置空')
     else:
         logger.debug('soundBind 关闭，跳过绑定方案切换')
+
+    # ── 更新 2D→3D 路由白名单 ──
+    # 只对绑定/重映射方案中命名的事件转 3D；装填音效等游戏 SFX 保持 2D
+    _build_route_3d_events(active_voice, se)
 
     # ── 字幕样式更新 ──
     # 切换语音包后，若战斗中字幕 View 已加载，更新其数据源
@@ -540,11 +586,12 @@ def _install_remapping_hooks():
     # 路径 A: 一次性事件 —— 绑定 + 重映射后调原始 C++ 函数
     # ═════════════════════════════════════════════════════════════
 
-    # ── ① WW_eventGlobal —— 全部 2D 音效 ──
-    # 所有声音统一走 WW_eventGlobalPos（3D fire-and-forget），确保 Wwise
-    # 创建 3D Game Object → marker listener 可携带音频内嵌名 → 字幕系统
-    # 能捕获 marker 触发。位置取听者坐标，2D 事件本身无距离衰减，位置不
-    # 影响音量。
+    # ── ① WW_eventGlobal —— 2D 音效 ──
+    # 默认保持 2D 播放（游戏中弹鼓装填音效的 complete 事件依赖 2D 对象
+    # 身份去停止 almost_complete 循环，转 3D 会打断该停循环机制）。
+    # 仅对白名单中的语音事件转 3D，让替换后的语音携带 marker 被字幕捕获。
+    # 转 3D 后 Wwise 创建 3D GO → marker listener 可携带
+    # 音频内嵌名 → 字幕系统能捕获 marker。
     #
     # 重映射在此层完成（替换事件名后传给原始 C++ 函数），不走
     # _play_voice_event。_play_voice_event 专用于绑定目标（需要 PySound
@@ -552,8 +599,12 @@ def _install_remapping_hooks():
     def _hooked_WW_eventGlobal(eventName, checkSoundBankName=''):
         g_binding_engine.on_event(eventName)
         remapped = g_remapping_engine.replace(eventName)
-        pos = _get_listener_position()
-        return _originals['WW_eventGlobalPos'](remapped, pos)
+        if eventName in _route_3d_events:
+            # 绑定/重映射涉及的语音：转 3D 播放以携带 marker 被字幕捕获
+            pos = _get_listener_position()
+            return _originals['WW_eventGlobalPos'](remapped, pos)
+        # 其余音效（装填音效等）保持 2D，不破坏游戏 2D 对象语义
+        return _originals['WW_eventGlobal'](remapped, checkSoundBankName)
     _hook_wwise(WWISE, 'WW_eventGlobal', _hooked_WW_eventGlobal)
 
     # ── ② WW_eventGlobalPos —— 全部 3D 位置音效 ──
