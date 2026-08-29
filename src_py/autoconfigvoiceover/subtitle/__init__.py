@@ -35,11 +35,3 @@ from .queue_s1 import S1Manager
 from .queue_s2 import S2Manager
 from .queue_s3 import S3Manager
 from .queue_s4 import S4Manager
-
-# —— 旧 manager.py 保留兼容（逐步废弃）——
-from .manager import (
-    SubtitleManager,
-    RendererState,
-    SubtitleSession,
-    DEFAULT_SLOT_HEIGHT,
-)
