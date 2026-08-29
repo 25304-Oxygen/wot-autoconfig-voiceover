@@ -20,6 +20,7 @@ Flash → Python 消息（经 onLog 路由）:
 """
 
 from autoconfigvoiceover.logger import Logger
+from autoconfigvoiceover.subtitle.assembler import assemble_entry_data
 
 logger = Logger('SubtitleSettingsPage')
 
@@ -307,18 +308,22 @@ def _hide_preview():
 def _assemble_preview_data(style, entry):
     """组装预览用的 Flash 渲染数据。
 
-    根据当前字幕显示模式（standard/concise）组装对应格式的结构。
-    取 timeline 第一条的样式代号，用 style 解析为实际样式值。
+    统一交给 assembler.assemble_entry_data 处理，确保与渲染路径一致。
 
     :param style: SubtitleStyle 实例
     :param entry: SubtitleEntry（template timeline[0]）
-    :return: dict（与 manager._assemble_data 同格式，加 preview 标记）
+    :return: dict（与渲染路径同格式，加 preview 标记）
     """
     mode = _get_display_mode()
-    if mode == 'concise':
-        return _assemble_preview_concise(style, entry)
-    else:
-        return _assemble_preview_standard(style, entry)
+    if mode == 'none':
+        mode = 'standard'  # 字幕显示关闭时仍按标准结构预览（与旧实现一致）
+    data = assemble_entry_data(
+        entry, style,
+        settings={'display_mode': mode, 'text_speed': 0, 'subtitle_anim': False},
+        offsets={},  # 空 dict → _apply_offsets 直接返回，位置保持原始值
+    )
+    data['preview'] = True
+    return data
 
 
 def _get_display_mode():
@@ -332,86 +337,6 @@ def _get_display_mode():
         return mode
     except Exception:
         return 'standard'
-
-
-def _assemble_preview_standard(style, entry):
-    """标准模式预览数据。"""
-    poster = style.get_poster(entry.poster)
-    background = style.get_background(entry.background)
-    tf_title = style.get_tf_title(entry.tf_title)
-    tf_message = style.get_tf_message(entry.tf_message)
-
-    # 规范化 tf_title：图片类型 → size 为 [w,h] 数组；文本类型 → 去 img，
-    # 并将 size 由 [0,0]（图片尺寸占位）转为 font_size 字号——样式约定
-    # size=图片尺寸、font_size=文字字号，Flash 端 _makeTextField 只认 size。
-    # 与渲染路径 assembler._assemble_standard 保持一致。
-    tf_title = dict(tf_title)
-    if tf_title.get('img', ''):
-        if not isinstance(tf_title.get('size'), list):
-            tf_title['size'] = [200, 40]
-    else:
-        tf_title.pop('img', None)
-        sz = tf_title.get('size', [0, 0])
-        if isinstance(sz, list):
-            tf_title['size'] = tf_title.get('font_size', 14)
-
-    # 标题文本: 样式代号即文本内容。
-    # 跳过条件: ①无代号 ②图片标题 ③空字典 {}（不显示）
-    title_text = ''
-    if entry.tf_title and not tf_title.get('img', '') and len(tf_title) > 0:
-        title_text = entry.tf_title
-
-    data = {
-        'mode':       'standard',
-        'preview':    True,
-        'text_speed': 0,
-        'poster':     dict(poster),
-        'background': dict(background),
-        'tf_title':   tf_title,
-        'tf_message': dict(tf_message),
-        'anime':      [],
-        'anime_start_at': [],
-    }
-    data['tf_title']['text'] = title_text
-    data['tf_message']['text'] = entry.text
-
-    return data
-
-
-def _assemble_preview_concise(style, entry):
-    """简洁模式预览数据。"""
-    name_code = entry.tf_title
-    msg_style = style.get_tf_message(entry.tf_message)
-    title_style = style.get_tf_title(name_code if name_code else '')
-    sm = style.get_simple_mode()
-
-    # 角色名后加全角冒号（展示层，与 manager._assemble_concise 一致）
-    # 若标题样式为空字典 {}（用户标记"不显示该组件"）→ 角色名也隐藏
-    if len(title_style) == 0:
-        display_name = ''
-    else:
-        display_name = (name_code + '：') if name_code else ''
-
-    data = {
-        'mode':       'concise',
-        'preview':    True,
-        'text_speed': 0,
-        'anime':      [],
-        'anime_start_at': [],
-        'concise': {
-            'name':       display_name,
-            'name_color': title_style.get('color', '#FFFFFF'),
-            'text':       entry.text,
-            'text_color': msg_style.get('color', '#FFFFFF'),
-            'position':   sm['msg_position'],
-            'width':      sm['msg_width'],
-            'font':       msg_style.get('font', '$FieldFont'),
-            'size':       msg_style.get('size', 14),
-            'gap':        sm['title_msg_gap'],
-        },
-    }
-
-    return data
 
 
 def ensure_saved_on_voice_switch():
