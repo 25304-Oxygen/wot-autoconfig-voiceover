@@ -58,7 +58,8 @@ def _assemble_concise(entry, base, style, offsets):
         'position': sm['msg_position'],
         'width': sm['msg_width'],
         'font': msg_style.get('font', '$FieldFont'),
-        'size': msg_style.get('size', 14),
+        # font_size (字号) 优先于 size (字号 / 尺寸)
+        'size': msg_style.get('font_size', msg_style.get('size', 14)),
         'gap': sm['title_msg_gap'],
     }
 
