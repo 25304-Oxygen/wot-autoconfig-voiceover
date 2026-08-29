@@ -483,11 +483,11 @@ class SettingsPage(object):
             from autoconfigvoiceover.voices import voice_switcher
             voice_switcher.apply_voice_override(checked_bool)
 
-        # 字幕设置即时应用到 SubtitleManager
+        # 字幕设置即时应用到字幕管理器
         if key in ('subtitleUpdate', 'multiSub'):
             from autoconfigvoiceover.subtitle.host import update_subtitle_settings
             update_subtitle_settings({key: checked_bool})
-        # 字幕额外动画开关 → 即时应用到 SubtitleManager
+        # 字幕额外动画开关 → 即时应用到字幕管理器
         if key == 'subtitleAnim':
             from autoconfigvoiceover.subtitle.host import update_subtitle_settings
             update_subtitle_settings({'subtitle_anim': checked_bool})
@@ -589,7 +589,7 @@ class SettingsPage(object):
     def handle_subtitle_display(self, mode):
         """字幕显示模式单选按钮切换。
 
-        持久化到配置 + 运行时热应用到 SubtitleManager。
+        持久化到配置 + 运行时热应用到字幕管理器。
         config 用 'simple'，manager 用 'concise'，做映射。
         """
         self._subtitle_display = mode
@@ -609,7 +609,7 @@ class SettingsPage(object):
     def handle_text_speed(self, value):
         """文字速度步进器变更。
 
-        持久化到配置 + 运行时热应用到 SubtitleManager（打字机效果速度）。
+        持久化到配置 + 运行时热应用到字幕管理器（打字机效果速度）。
         """
         self._text_speed = float(value)
         self._save_to_config()
