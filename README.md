@@ -1,10 +1,9 @@
 # 坦克世界语音包管理插件
 
-<div align="center">
+[![Static Badge](https://img.shields.io/badge/English-README?label=README)](README.en.md)
 
-**Language:** [English](README.en.md) | [简体中文](README.md)
-
-</div>
+[![GitHub Release](https://img.shields.io/github/v/release/25304-Oxygen/wot-autoconfig-voiceover?sort=semver&display_name=tag)](https://github.com/25304-Oxygen/wot-autoconfig-voiceover/releases/latest)
+[![GitHub License](https://img.shields.io/github/license/25304-Oxygen/wot-autoconfig-voiceover)](LICENSE)
 
 ## 简介
 
