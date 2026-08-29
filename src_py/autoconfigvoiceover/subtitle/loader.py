@@ -277,13 +277,14 @@ class SubtitleStyle(object):
 
         # 将 default_raw 的缺失/无效字段用硬编码 fallback 补齐
         if default_raw is not None and default_raw:
-            # 非空字典：逐字段检查，无效值→硬编码
+            # 非空字典：用户显式字段优先，fallback 只补缺省。
+            # 再对 fallback 定义的键补默认值。
             default_resolved = {}
-            for key, fb_val in fallback.items():
-                val = default_raw.get(key)
+            for key, val in default_raw.items():
                 if val is not None and not (isinstance(val, basestring) and val == ''):
                     default_resolved[key] = val
-                else:
+            for key, fb_val in fallback.items():
+                if key not in default_resolved:
                     default_resolved[key] = fb_val
         elif default_raw is not None and not default_raw:
             # default_raw 是 {}（空字典）→ 非常见情况，当硬编码兜底
@@ -308,6 +309,11 @@ class SubtitleStyle(object):
             # 空字符串视为"用户留空=无效"，保持 default 的值
             if value is not None and not (isinstance(value, basestring) and value == ''):
                 result[key] = value
+
+        # 显式样式写明了 size 但未写字号 → 删除继承来的 font_size，
+        # 否则 assembler 会用继承的 font_size 覆盖用户显式写的 size
+        if 'size' in raw and 'font_size' not in raw:
+            result.pop('font_size', None)
 
         return result
 
