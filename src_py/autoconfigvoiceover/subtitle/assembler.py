@@ -111,9 +111,10 @@ def _assemble_standard(entry, base, style, settings, offsets):
     # 类型检测区分：size 是列表→默认值/图片尺寸，用 font_size；是数字→用户显式设了字号，保留
     if not tf_title.get('img', ''):
         tf_title.pop('img', None)
-        sz = tf_title.get('size', [0, 0])
-        if isinstance(sz, list):
-            tf_title['size'] = tf_title.get('font_size', 14)
+        if tf_title:  # 空样式保持原样
+            sz = tf_title.get('size', [0, 0])
+            if isinstance(sz, list):
+                tf_title['size'] = tf_title.get('font_size', 14)
 
     # tf_message 永远是文字；font_size（来自 "字号" 键）仅在用户显式书写时存在，
     # 此时优先于 size（默认 14）
