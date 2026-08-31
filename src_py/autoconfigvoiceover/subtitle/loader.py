@@ -163,6 +163,9 @@ _DEFAULTS = {
     },
 }
 
+# 由于回退机制会导致图片样式包含继承字段，尽管 img 优先，这里还是剔除不必要字段
+_IMAGE_COMPAT_KEYS = frozenset(('img', 'position', 'size', 'radius'))
+
 # ═════════════════════════════════════════════════════════════
 # 数据类
 # ═════════════════════════════════════════════════════════════
@@ -314,6 +317,18 @@ class SubtitleStyle(object):
         # 否则 assembler 会用继承的 font_size 覆盖用户显式写的 size
         if 'size' in raw and 'font_size' not in raw:
             result.pop('font_size', None)
+
+        # 没有指定默认样式时，若带图片的样式被当成默认（第一个被读取）
+        # 避免其他样式意外继承 img 字段
+        if raw.get('img'):
+            result.pop('color', None)
+            result.pop('alpha', None)
+        elif any(k not in _IMAGE_COMPAT_KEYS
+                    and raw[k] is not None
+                    and not (isinstance(raw[k], basestring) and raw[k] == '')
+                    for k in raw):
+            # 非图片类型剔除“继承”来的图片属性
+            result.pop('img', None)
 
         return result
 
