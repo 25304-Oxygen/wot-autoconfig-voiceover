@@ -2,6 +2,7 @@ package com.github._25304_Oxygen.subtitle
 {
     import flash.display.Sprite;
     import flash.display.Shape;
+    import flash.display.DisplayObject;
     import flash.events.Event;
     import flash.events.TimerEvent;
     import flash.geom.Rectangle;
@@ -114,9 +115,11 @@ package com.github._25304_Oxygen.subtitle
         /** 海报层（BitmapContainer 或 null）。 */
         private var _posterBmp:BitmapContainer;
 
-        /** 背景层（Shape 绘制纯色圆角矩形，或 BitmapContainer 图片背景）。 */
-        private var _bgSprite:Sprite;
+        /** 背景层——图片背景（BitmapContainer）*/
         private var _bgBmp:BitmapContainer;
+
+        /** 背景层——纯色背景（Shape，与图片背景互斥）。 */
+        private var _bgShape:Shape;
 
         /** 标题 TextField（文本标题）。 */
         private var _titleTF:TextField;
@@ -262,11 +265,6 @@ package com.github._25304_Oxygen.subtitle
             // 空字典 {} 的 position 为 undefined → 不创建背景
             if (data.background && data.background.position != undefined)
             {
-                _bgSprite = new Sprite();
-                // 纯显示容器，不参与鼠标命中——防止 Scaleform 中拦截下层点击
-                _bgSprite.mouseEnabled = false;
-                _bgSprite.mouseChildren = false;
-                addChild(_bgSprite);
                 _drawBackground(data);
             }
 
@@ -407,7 +405,6 @@ package com.github._25304_Oxygen.subtitle
             // 空字典 {} → 无内容可绘制
             if (bg.img == undefined && bg.color == undefined) return;
 
-            // 图片背景优先
             if (bg.img)
             {
                 var bgSize:Array = bg.size || [300, 80];
@@ -419,17 +416,11 @@ package com.github._25304_Oxygen.subtitle
                     _bgBmp.x = Number(bg.position[0]);
                     _bgBmp.y = Number(bg.position[1]);
                 }
-                _bgSprite.addChild(_bgBmp);
+                addChild(_bgBmp);
                 return;
             }
 
             // 纯色圆角矩形
-            if (bg.position)
-            {
-                _bgSprite.x = Number(bg.position[0]);
-                _bgSprite.y = Number(bg.position[1]);
-            }
-
             var w:Number = Number(bg.size ? bg.size[0] : 300);
             var h:Number = Number(bg.size ? bg.size[1] : 80);
             var color:uint = ColorUtil.parse(bg.color, 0x000000);
@@ -443,7 +434,13 @@ package com.github._25304_Oxygen.subtitle
             else
                 sh.graphics.drawRect(0, 0, w, h);
             sh.graphics.endFill();
-            _bgSprite.addChild(sh);
+            if (bg.position)
+            {
+                sh.x = Number(bg.position[0]);
+                sh.y = Number(bg.position[1]);
+            }
+            _bgShape = sh;
+            addChild(sh);
         }
 
         // ═══════════════════════════════════════════════════════
@@ -837,9 +834,8 @@ package com.github._25304_Oxygen.subtitle
                                          stageY:Number):Boolean
         {
             var layer:Object = _borderLayers ? _borderLayers[target] : null;
-            if (!layer || !layer.component) return false;
-
-            var rect:Rectangle = layer.component.getBounds(stage);
+            if (!layer || !layer.border) return false;
+            var rect:Rectangle = layer.border.getBounds(stage);
             return rect.contains(stageX, stageY);
         }
 
@@ -950,9 +946,8 @@ package com.github._25304_Oxygen.subtitle
             }
 
             // —— 标准模式：四个组件 ——
-            // 按 z-order 排列的组件列表（底→顶）
             var targets:Array = [
-                {key: "background", obj: _bgSprite},
+                {key: "background", obj: _bgBmp ? _bgBmp : _bgShape},
                 {key: "tf_message", obj: _messageTF},
                 {key: "poster",     obj: _posterBmp},
                 {key: "tf_title",   obj: _titleBmp ? _titleBmp : _titleTF}
@@ -984,8 +979,6 @@ package com.github._25304_Oxygen.subtitle
                 // 不可见，图片就绪后需按实际尺寸重绘边框
                 if (obj is BitmapContainer)
                     _registerBorderRefresh(t.key, obj as BitmapContainer);
-                else if (t.key == "background" && _bgBmp)
-                    _registerBorderRefresh(t.key, _bgBmp);
             }
 
             L.debug("边框已创建: " + _countBorders() + " 组件");
@@ -1037,7 +1030,10 @@ package com.github._25304_Oxygen.subtitle
             switch (key)
             {
                 case "poster":     return _posterBmp ? _posterBmp.width : 64;
-                case "background": return _bgSprite ? _bgSprite.width : 300;
+                case "background":
+                    if (_bgBmp) return _bgBmp.width;
+                    if (_bgShape) return _bgShape.width;
+                    return 300;
                 case "tf_title":
                     if (_titleBmp) return _titleBmp.width;
                     return _titleTF ? _titleTF.width : 200;
@@ -1052,7 +1048,10 @@ package com.github._25304_Oxygen.subtitle
             switch (key)
             {
                 case "poster":     return _posterBmp ? _posterBmp.height : 64;
-                case "background": return _bgSprite ? _bgSprite.height : 80;
+                case "background":
+                    if (_bgBmp) return _bgBmp.height;
+                    if (_bgShape) return _bgShape.height;
+                    return 80;
                 case "tf_title":
                     if (_titleBmp) return _titleBmp.height;
                     return (_titleTF && _titleTF.textHeight > 0)
@@ -1455,10 +1454,11 @@ package com.github._25304_Oxygen.subtitle
                 hasContent = true;
             }
             // —— background / 背景 ——
-            if (_bgSprite && _bgSprite.numChildren > 0)
+            if (_bgBmp || _bgShape)
             {
-                var bt:Number = _bgSprite.y;
-                var bb:Number = _bgSprite.y + _bgSprite.height;
+                var bgRef:DisplayObject = (_bgBmp != null) ? _bgBmp : _bgShape;
+                var bt:Number = bgRef.y;
+                var bb:Number = bgRef.y + bgRef.height;
                 if (bt < minY) minY = bt;
                 if (bb > maxY) maxY = bb;
                 hasContent = true;
@@ -1537,10 +1537,11 @@ package com.github._25304_Oxygen.subtitle
                 wHasContent = true;
             }
             // background
-            if (_bgSprite && _bgSprite.numChildren > 0)
+            if (_bgBmp || _bgShape)
             {
-                var bl:Number = _bgSprite.x;
-                var br:Number = _bgSprite.x + _bgSprite.width;
+                var bgWRef:DisplayObject = (_bgBmp != null) ? _bgBmp : _bgShape;
+                var bl:Number = bgWRef.x;
+                var br:Number = bgWRef.x + bgWRef.width;
                 if (bl < minX) minX = bl;
                 if (br > maxX) maxX = br;
                 wHasContent = true;
@@ -1608,7 +1609,6 @@ package com.github._25304_Oxygen.subtitle
             // 图片标题 → 文本标题：移除 BMP，创建 TF
             // 文本标题 → 图片标题：移除 TF，创建 BMP
             // 文本标题 → 文本标题：原地更新文本和样式
-
             var newTitleHasImg:Boolean = data.tf_title && data.tf_title.img;
 
             // 移除旧图片标题
@@ -1620,7 +1620,6 @@ package com.github._25304_Oxygen.subtitle
 
             if (newTitleHasImg)
             {
-                // 新数据是图片标题 → 创建 BitmapContainer
                 var tSize:Array = data.tf_title.size || [200, 40];
                 _titleBmp = new BitmapContainer(
                     Number(tSize[0]), Number(tSize[1]),
@@ -1632,7 +1631,7 @@ package com.github._25304_Oxygen.subtitle
                 }
                 addChild(_titleBmp);
 
-                // 如果旧的是文本标题，移除 TextField
+                // 旧的是文本标题则移除
                 if (_titleTF)
                 {
                     removeChild(_titleTF);
@@ -1665,12 +1664,23 @@ package com.github._25304_Oxygen.subtitle
             }
 
             // —— 重绘背景 ——
-            if (_bgSprite && data.background)
+            // 先移除旧背景（图片 BitmapContainer 或纯色 Shape，两者互斥）
+            if (_bgBmp)
             {
-                while (_bgSprite.numChildren > 0)
-                    _bgSprite.removeChildAt(0);
+                if (_bgBmp.parent) _bgBmp.parent.removeChild(_bgBmp);
                 _bgBmp = null;
+            }
+            if (_bgShape)
+            {
+                if (_bgShape.parent) _bgShape.parent.removeChild(_bgShape);
+                _bgShape = null;
+            }
+            // 新数据有背景则重建（空字典 {} 无 position → 不创建）
+            if (data.background && data.background.position != undefined)
+            {
                 _drawBackground(data);
+                var bgObj:DisplayObject = (_bgBmp != null) ? _bgBmp : _bgShape;
+                if (bgObj) setChildIndex(bgObj, 0);
             }
         }
 
