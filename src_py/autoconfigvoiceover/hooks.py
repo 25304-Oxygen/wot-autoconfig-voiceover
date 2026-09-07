@@ -65,28 +65,24 @@ def _new_setPlayerVehicle(original_func, self, vehiclePublicInfo, isPlayerVehicl
         logger.debug('setPlayerVehicle: arena 尚未就绪，跳过语音守护和字幕加载')
         return
 
-    # ── 普通成员 → 放行（游戏菜单可自由切换）──
     if self.specialVoice is None:
+        # 普通成员 → 放行（游戏菜单可自由切换）
         logger.debug('setPlayerVehicle: 普通成员，放行')
-        _load_subtitle_view()
-        return
-
-    # ── 特殊车长 → 首次强制掰回，后续由 setMode 钩子持续守护 ──
-    # voiceOverride 关闭：特殊车长用自己的语音，不强制
-    if not voice_switcher._voice_override_on:
+    elif not voice_switcher._voice_override_on:
+        # 特殊车长 + 不覆盖语音：用自己的语音，不强制
         logger.debug('setPlayerVehicle: 特殊车长，voiceOverride 关闭，放行')
-        _load_subtitle_view()
-        return
+    else:
+        # 特殊车长 + 覆盖语音：首次强制掰回，后续由 setMode 钩子守护
+        from autoconfigvoiceover.voices.voice_switcher import get_current_mode_name
+        import SoundGroups
 
-    from autoconfigvoiceover.voices.voice_switcher import get_current_mode_name
-    import SoundGroups
+        mode_name = get_current_mode_name()
+        if mode_name:
+            logger.debug('setPlayerVehicle: 特殊车长 specialVoice=%s → 重新覆盖为 %s',
+                         self.specialVoice.languageMode, mode_name)
+            SoundGroups.g_instance.soundModes.setMode(mode_name)
 
-    mode_name = get_current_mode_name()
-    if mode_name:
-        logger.debug('setPlayerVehicle: 特殊车长 specialVoice=%s → 强制拉回 %s',
-                     self.specialVoice.languageMode, mode_name)
-        SoundGroups.g_instance.soundModes.setMode(mode_name)
-
+    voice_switcher.reassert_gender()
     _load_subtitle_view()
 
 
