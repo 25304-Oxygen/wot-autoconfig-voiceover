@@ -414,21 +414,14 @@ class SettingsPage(object):
     # ═════════════════════════════════════════════════════════
 
     def handle_nation_voice_gender(self, gender):
-        """系别语音单选按钮切换。
-
-        持久化性别偏好；若当前活跃语音是系别语音则即时应用。
-        """
+        """成员性别单选按钮切换。"""
         self._nation_voice_gender = gender
         self._save_to_config()
 
-        # 如果当前活跃语音是系别语音，即时应用性别切换
-        from autoconfigvoiceover.voices import g_active_mgr, voice_switcher
-        if g_active_mgr.current is not None:
-            voice_switcher._apply_gender(g_active_mgr.current.voice_id)
+        from autoconfigvoiceover.voices import voice_switcher
+        voice_switcher.reassert_gender()
 
-        logger.info('系别语音性别: %s（已持久化%s）', gender,
-                    ' + 已应用' if g_active_mgr.current is not None
-                    and g_active_mgr.current.voice_id != 'default' else '')
+        logger.info('成员性别偏好: %s', gender)
 
     def handle_notify_push(self, level):
         """通知推送级别单选按钮切换。"""
