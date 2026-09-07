@@ -519,8 +519,9 @@ class ACVMenuMeta(View):
             g_remapping_engine.set_enabled(_se.get('soundRemap', True))
             g_binding_engine.set_enabled(_se.get('soundBind', True))
         else:
-            # ── 禁用：切回 default → 隐藏已知语音包 → 关闭引擎 → 卸载钩子 ──
+            # ── 禁用：切回 default → 还原性别默认 → 隐藏已知语音包 → 关闭引擎 → 卸载钩子 ──
             _vs2.switch_voice('default', silent=True)
+            _vs2.reset_gender_default()
             _vs2.apply_voice_visibility(
                 show_ingame=False, show_outside=False)
 
