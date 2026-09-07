@@ -214,6 +214,7 @@ def switch_voice(voice_id, type_index=0, lang_index=0, silent=False):
     #     但播放确认音让用户知道操作已响应。
     if current == mode_name and mode_name != 'default':
         logger.debug('已是目标模式 %s，跳过 setMode，播放确认音', mode_name)
+        reassert_gender(mode_name)
         _activate_if_needed(voice_id)
         _current_resolved_mode = mode_name
         if load_config().get('settings', {}).get('autoVolume', True):
@@ -253,8 +254,7 @@ def switch_voice(voice_id, type_index=0, lang_index=0, silent=False):
         except Exception:
             pass
 
-        # 性别开关（仅系别语音设，其他不设避免第三方包无声）
-        _apply_gender(voice_id)
+        reassert_gender(mode_name)
 
         # 确认音
         if not silent and load_config().get('settings', {}).get('playOnSwitch', True):
@@ -315,20 +315,57 @@ def ensure_active_voice():
         _activate_if_needed(saved_id)
 
 
-def _apply_gender(voice_id):
-    """系别语音设性别 switch；其他语音似乎不受影响。"""
+GENDER_ALLOWED_TYPES = ('default', 'nation')
+"""允许应用性别偏好的语音类别。"""
+
+
+def _is_nation_voice_mode(mode_name):
+    """mode 名是否属于系别语音名单（default + 各系 standard 语音）。
+
+    通常只有系别语音才同时有 SWITCH_ext_vo_gender 的 FEMALE/MALE 两个分组。
+    """
+    if mode_name == 'default':
+        return True
+    from .repository import g_voice_repo
+    for d in g_voice_repo.ingame_detail:
+        if (d.get('voice_type') in GENDER_ALLOWED_TYPES
+                and d.get('voiceID') == mode_name):
+            return True
+    return False
+
+
+def _gender_switch_for_mode(mode_name):
+    """按 mode 名决定 gender switch 写值：系别名单内→用户偏好；其余→MALE。"""
     import SoundGroups
-    from autoconfigvoiceover.config import load_config
-    detail = _find_detail(voice_id)
-    is_nation = detail is not None and detail.get('voice_type') == 'nation'
-    if not is_nation:
+    if _is_nation_voice_mode(mode_name):
+        from autoconfigvoiceover.config import load_config
+        gender_str = load_config(log=False).get(
+            'settings', {}).get('nationVoiceGender', 'male')
+        if gender_str == 'female':
+            return SoundGroups.CREW_GENDER_SWITCHES.FEMALE
+    return SoundGroups.CREW_GENDER_SWITCHES.MALE
+
+
+def reassert_gender(mode_name=None):
+    """成员性别断言，根据实际声音模式决定是否应用已设置的性别偏好。
+
+    除系别语音外，其他语音固定使用默认分组（通常是 MALE），避免语音包被静音。
+    """
+    if _in_battle and _has_special_crew and not _voice_override_on:
         return
-    gender_str = load_config().get('settings', {}).get('nationVoiceGender', 'male')
-    if gender_str == 'female':
-        gender = SoundGroups.CREW_GENDER_SWITCHES.FEMALE
-    else:
-        gender = SoundGroups.CREW_GENDER_SWITCHES.MALE
+    import SoundGroups
+    if mode_name is None:
+        mode_name = SoundGroups.g_instance.soundModes.currentMode
+    gender = _gender_switch_for_mode(mode_name)
     SoundGroups.g_instance.setSwitch(SoundGroups.CREW_GENDER_SWITCHES.GROUP, gender)
+
+
+def reset_gender_default():
+    """把 WWISE gender switch 还原为游戏默认（DEFAULT == MALE）"""
+    import SoundGroups
+    SoundGroups.g_instance.setSwitch(
+        SoundGroups.CREW_GENDER_SWITCHES.GROUP,
+        SoundGroups.CREW_GENDER_SWITCHES.DEFAULT)
 
 
 def _apply_voice_volume(voice_id):
@@ -355,7 +392,7 @@ def _sync_user_voice_change(mode_name):
     _activate_if_needed(voice_id)
     if load_config().get('settings', {}).get('autoVolume', True):
         _apply_voice_volume(voice_id)
-    _apply_gender(voice_id)
+    reassert_gender(mode_name)
     logger.debug('战斗中语音临时同步: mode=%s voiceID=%s（未持久化）', mode_name, voice_id)
 
 
@@ -366,6 +403,7 @@ def ensure_voice_consistency():
     此函数在 ACV 面板显示前纠正——让用户觉得"游戏菜单改不了"。
     战斗中不干预（用户有临时试听权）。
     """
+    reassert_gender()
     if _in_battle:
         return  # 战斗中不纠正，用户有临时试听权
     if _current_resolved_mode == 'default':
