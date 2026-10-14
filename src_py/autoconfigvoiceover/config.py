@@ -99,10 +99,17 @@ DEFAULTS = {
         'notifyPushLevel':     'count',
         'subtitleDisplay':     'standard',
         'textSpeed':           0.03,
+        # colorScheme/bgIcon 存储稳定 ASCII token（第零期 token 化，2026-08）：
+        #   colorScheme: 'default' / 'follow_pack' / 预设主题 name
+        #                或语音包内嵌主题 pack_id（内容身份）
+        #   bgIcon:      'default' / 'follow_pack' / 语音包 pack_id
+        # 配置值不正确（不在选项列表）时由消费方回退本默认值
         'colorScheme':         'follow_pack',
         'bgIcon':              'follow_pack',
         'titleTextMode':       'followScheme',
         'titleTextColor':      '#D4D4D4',
+        # uiLang: 'auto'（跟随客户端）或语言代码（'zh_cn' / 'zh_tw' / 'en'，
+        #         或用户自建语言）。生效语言见 l10n.get_effective_lang()
         'uiLang':              'auto',
     },
 }

@@ -763,10 +763,8 @@ class ACVMenuMeta(View):
 # ViewSettings 注册（模块 import 即执行）
 # ═════════════════════════════════════════════════════════════
 
-from gui.Scaleform.framework import ViewSettings, ScopeTemplates
+from gui.Scaleform.framework import ViewSettings, g_entitiesFactories, ScopeTemplates
 from frameworks.wulf import WindowLayer
-from helpers import dependency
-from skeletons.gui.impl import IGuiLoader
 
 
 def _getViewSettings():
@@ -784,7 +782,7 @@ def _getViewSettings():
 
 for _vs in _getViewSettings():
     try:
-        dependency.instance(IGuiLoader).entitiesFactory.addSettings(_vs)
+        g_entitiesFactories.addSettings(_vs)
     except Exception:
         logger.debug('View 已注册（跳过重复）: %s', VIEW_ALIAS)
     else:
@@ -794,6 +792,10 @@ for _vs in _getViewSettings():
 # ═════════════════════════════════════════════════════════════
 # 辅助函数
 # ═════════════════════════════════════════════════════════════
+
+from helpers import dependency
+from skeletons.gui.impl import IGuiLoader
+
 
 @dependency.replace_none_kwargs(guiLoader=IGuiLoader)
 def _getParentWindow(guiLoader=None):
