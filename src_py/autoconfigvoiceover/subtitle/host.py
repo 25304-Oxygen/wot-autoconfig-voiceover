@@ -418,10 +418,11 @@ def _getViewSettings():
 
 def init_subtitle():
     """注册字幕 View 设置（在 ACV init() 中调用一次）。"""
-    from gui.Scaleform.framework import g_entitiesFactories
+    from helpers import dependency
+    from skeletons.gui.impl import IGuiLoader
 
     for settings in _getViewSettings():
-        g_entitiesFactories.addSettings(settings)
+        dependency.instance(IGuiLoader).entitiesFactory.addSettings(settings)
     logger.info('字幕 View 设置已注册')
 
 
@@ -459,7 +460,7 @@ def load_subtitle_view():
         logger.info('loadView 返回后 _view_instance 仍为 None，启动就绪轮询...')
         _poll_view_ready(0)  # 结束或超时时由 _poll_view_ready 复位 _load_in_progress
     except Exception:
-        logger.exception('字幕 View 加载失败（SWF 是否已编译？）')
+        logger.exception('字幕 View 加载失败')
         _load_in_progress = False
 
 
